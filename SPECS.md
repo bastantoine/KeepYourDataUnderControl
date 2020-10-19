@@ -86,6 +86,8 @@ Cette API exposera deux endpoints:
   - `/posts/{id}/comments`: actions liées à la création de commentaires liés à un post identifié par son identifiant `id` via `POST`
 - `/comments/`: actions liées à la modification et la suppression de commentaires déjà existants via `PUT` et `DEL` respectivement
 
+Ces différents endpoints, ainsi que les données acceptées et renvoyées sont définies précisément dans [les spécifications de l'API](API.md)
+
 ### 3.2.1. Points à définir
 
 - [ ] Quel framework utiliser ? Flask ? NodeJS ?
