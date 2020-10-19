@@ -33,12 +33,12 @@ Une requête `GET /posts/` renvoierait une réponse avec un corps suivant ce sch
 {
     'posts': [
         {
-            'id': {id_post},
-            'link': {link_to_ressource},
-            'comments': [
+            "id": "{id_post}",
+            "link": "{link_to_ressource}",
+            "comments": [
                 {
-                    'id': {id_comment},
-                    'link': {link_to_ressource}
+                    "id": "{id_comment}",
+                    "link": "{link_to_ressource}"
                 },
                 ...
             ]
@@ -56,7 +56,7 @@ Le corps doit être sous la forme d'un JSON avec comme unique clé `link` ayant 
 
 ```json
 {
-    'link': {link_to_ressource}
+    "link": "{link_to_ressource}"
 }
 ```
 
@@ -64,8 +64,8 @@ La réponse contient un JSON avec deux clés: `link` défini avec le même lien 
 
 ```json
 {
-    'id': {id_post},
-    'link': {link_to_ressource}
+    "id": "{id_post}",
+    "link": "{link_to_ressource}"
 }
 ```
 
@@ -77,7 +77,7 @@ Le corps doit être sous la forme d'un JSON avec comme unique clé `link` ayant 
 
 ```json
 {
-    'link': {link_to_ressource}
+    "link": "{link_to_ressource}"
 }
 ```
 
@@ -85,8 +85,8 @@ La réponse contient un JSON avec deux clés: `link` défini avec le même lien 
 
 ```json
 {
-    'id': {id_post},
-    'link': {link_to_ressource}
+    "id": "{id_post}",
+    "link": "{link_to_ressource}"
 }
 ```
 
@@ -112,7 +112,7 @@ Le corps doit être sous la forme d'un JSON avec comme unique clé `link` ayant 
 
 ```json
 {
-    'link': {link_to_ressource}
+    "link": "{link_to_ressource}"
 }
 ```
 
@@ -120,8 +120,8 @@ La réponse contient un JSON avec deux clés: `link` défini avec le même lien 
 
 ```json
 {
-    'id': {id_comment},
-    'link': {link_to_ressource}
+    "id": "{id_comment}",
+    "link": "{link_to_ressource}"
 }
 ```
 
@@ -141,7 +141,7 @@ Le corps doit être sous la forme d'un JSON avec comme unique clé `link` ayant 
 
 ```json
 {
-    'link': {link_to_ressource}
+    "link": "{link_to_ressource}"
 }
 ```
 
@@ -149,8 +149,8 @@ La réponse contient un JSON avec deux clés: `link` défini avec le même lien 
 
 ```json
 {
-    'id': {id_comment},
-    'link': {link_to_ressource}
+    "id": "{id_comment}",
+    "link": "{link_to_ressource}"
 }
 ```
 
