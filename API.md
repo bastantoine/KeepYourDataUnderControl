@@ -31,7 +31,7 @@ Une requête `GET /posts/` renvoierait une réponse avec un corps suivant ce sch
 
 ```json
 {
-    'posts': [
+    "posts": [
         {
             "id": "{id_post}",
             "link": "{link_to_ressource}",
