@@ -19,6 +19,7 @@ Ce document présente les spécifications techniques et fonctionnelles du projet
 Dans cette section nous définissons les ressources supportées par ce prototype, et précisons quelques suppositions que nous avons fait.
 
 Par ressource, nous entendons n'importe quel média qui, dans le système mis en place, ne serait plus hébergé par le service l'utilisant, mais par l'utilisateur qui en permet l'usage par le service.
+*C'est interessant cette formulation, ca montre qu'un systeme de droit (type ACL) pourrait etre associé à ce prototype: L'utilisateur mettrait une ressource sur son serveur HTTP mais seulement certains services externes (i.e. les clients dans ce cas) pourrait y acceder et ce afin d'eviter qu'un client malveillant puisque recuperer une ressource à l'insu du proprietaire* 
 
 ## 1.1. Types de ressources
 
@@ -32,6 +33,7 @@ Par ailleurs nous avons supposé que **l'utilisateur fourni le bon type de resso
 ## 1.2. Accessibilité des ressources
 
 En ce qui concerne l'accessibilité des ressources, **elles doivent être accessibles par une simple requête HTTP**. Par ailleurs nous supposons qu'elles sont bien accesibles, et que si ça n'est pas le cas, l'extension chargée de l'affichage des ressources ne doit rien faire de particulier.
+*Ici, il faut prevoir un affichage specifique du genre "ressource non disponible", notamment comme vous l'avez indiqué ci dessous selon le type des ressources*
 
 ## 1.3. Balises HTML utilisées pour l'insertion des ressources
 
@@ -54,6 +56,7 @@ Dans le cas d'une ressource de texte, **il faudra s'assurer que le contenu soit 
 ## 1.4. Points à définir
 
 - [ ] Comment gérer les différents encoding possibles ? UTF-8 accepté uniquement ? Que faire pour un texte en UTF-8 dans une page en Latin1 ?
+*Comment cela se passe aujourd'hui? quand vous faites un post dans un blog quelconque?*
 
 # 2. Extension navigateur pour l'affichage des ressources
 
@@ -68,6 +71,7 @@ Afin de tester le fonctionnement de ce système, il sera nécessaire de créer u
 Ce service **devra permettre de créer des *posts* contenant un lien vers une image ou une vidéo**.
 
 Il **devra aussi être possible d'ajouter des commentaires sous des posts, sous la forme d'un lien vers un texte**. Par soucis de simplicité, **il ne sera pas possible d'ajouter un commentaire à un commentaire déjà existant**.
+*Qu'est ce que cela complexifie ?*
 
 Par ailleurs, aussi pour des raisons de simplicité, **ce service ne consistera qu'en une unique page affichant les posts, et leur commentaires associés**, de manière linéaire par ordre chronologique de la date et heure de publication, le plus récent en premier. Ainsi **il n'y aura pas de page affichant uniquement un post et ses commentaires**.
 
@@ -75,6 +79,7 @@ Par ailleurs, aussi pour des raisons de simplicité, **ce service ne consistera 
 
 - [ ] Doit-il y avoir une partie admin ?
 - [ ] L'utilisateur doit-il se connecter à un compte pour poster/commenter ?
+*Quel serait l'interet selon vous de ces deux propositions? A premiere vue, rien?*
 
 ## 3.2. Backend du service
 
@@ -87,16 +92,18 @@ Cette API exposera deux endpoints:
 - `/comments/`: actions liées à la modification et la suppression de commentaires déjà existants via `PUT` et `DEL` respectivement
 
 Ces différents endpoints, ainsi que les données acceptées et renvoyées sont définies précisément dans [les spécifications de l'API](API.md).
+*Si possible preferer HTTPS en place d'HTTP*
 
 ### 3.2.1. Points à définir
 
 - [ ] Quel framework utiliser ? Flask ? NodeJS ?
-
+*Libre à vous*
 ## 3.3. Frontend
 
 ### 3.3.1. Points à définir
 
 - [ ] Quel framework utiliser ? Angular ? React ?
+*Libre à vous*
 
 # 4. Application mobile
 
