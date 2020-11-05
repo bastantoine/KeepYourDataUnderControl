@@ -3,15 +3,12 @@ Ce document présente les spécifications techniques et fonctionnelles du projet
 - [1. Ressources](#1-ressources)
   - [1.1. Types de ressources](#11-types-de-ressources)
   - [1.2. Accessibilité des ressources](#12-accessibilité-des-ressources)
+    - [1.2.1. Restrictions des accès des ressources aux services autorisés](#121-restrictions-des-accès-des-ressources-aux-services-autorisés)
   - [1.3. Balises HTML utilisées pour l'insertion des ressources](#13-balises-html-utilisées-pour-linsertion-des-ressources)
-  - [1.4. Points à définir](#14-points-à-définir)
 - [2. Extension navigateur pour l'affichage des ressources](#2-extension-navigateur-pour-laffichage-des-ressources)
 - [3. Service *« à la Instagram »* pour la démonstration](#3-service--à-la-instagram--pour-la-démonstration)
-  - [3.1. Points généraux à définir](#31-points-généraux-à-définir)
-  - [3.2. Backend du service](#32-backend-du-service)
-    - [3.2.1. Points à définir](#321-points-à-définir)
-  - [3.3. Frontend](#33-frontend)
-    - [3.3.1. Points à définir](#331-points-à-définir)
+  - [3.1. Backend du service](#31-backend-du-service)
+  - [3.2. Frontend](#32-frontend)
 - [4. Application mobile](#4-application-mobile)
 
 # 1. Ressources
@@ -31,7 +28,11 @@ Par ailleurs nous avons supposé que **l'utilisateur fourni le bon type de resso
 
 ## 1.2. Accessibilité des ressources
 
-En ce qui concerne l'accessibilité des ressources, **elles doivent être accessibles par une simple requête HTTP**. Par ailleurs nous supposons qu'elles sont bien accesibles, et que si ça n'est pas le cas, l'extension chargée de l'affichage des ressources ne doit rien faire de particulier.
+En ce qui concerne l'accessibilité des ressources, **elles doivent être accessibles par une simple requête HTTP(S)**. Par ailleurs, si une ressource n'était pas accessible, un comportement alternatif est possible et a été prévu (voir la définition des balises HTML utilisées ci-dessous).
+
+### 1.2.1. Restrictions des accès des ressources aux services autorisés
+
+Dans un premier temps, par soucis de simplicité, nous supposerons que l'accès aux ressources n'est pas restreint. Il sera possible de concevoir dans un second temps une solution permettant de restreindre l'accès a certains services.
 
 ## 1.3. Balises HTML utilisées pour l'insertion des ressources
 
@@ -43,7 +44,7 @@ Le tableau ci dessous présente les nouvelles balises utilisées, ainsi que les 
 |-------------------|------------------------------------------|---------------------------------------|
 | Image             | `<eimg src="{link}" />`                  | `<img src="{link}" />`                |
 | Vidéo             | `<evid src="{link}" />`                  | `<video><source src="{link}"></video>`|
-| Texte             | `<etxt src="{link}" alt="{Alt text}" />` | `{content}|{Alt text}`   |
+| Texte             | `<etxt src="{link}" alt="{Alt text}" />` | `{content}`                           |
 
 Deux cas se présentent si une ressource n'est pas disponible:
 1. Une ressource de type image/video : les navigateurs web gèrent déjà correctement ce cas, **il a donc été choisi de ne rien faire de particulier** en plus de ce que propose déjà les navigateurs.
@@ -51,9 +52,7 @@ Deux cas se présentent si une ressource n'est pas disponible:
 
 Dans le cas d'une ressource de texte, **il faudra s'assurer que le contenu soit correctement echappé**, afin d'éviter des potentielles failles XSS. De même **il faudra être bien attentif à ce que les retours à la ligne potentiellement présent dans la ressource à récupérer soit correctement traités** une fois la ressource injectée dans la page.
 
-## 1.4. Points à définir
-
-- [ ] Comment gérer les différents encoding possibles ? UTF-8 accepté uniquement ? Que faire pour un texte en UTF-8 dans une page en Latin1 ?
+Par ailleurs, nous supposerons *dans un premier temps* que **les ressources de textes affichées ainsi que le service de démonstration utiliseront tous le charset UTF-8**.
 
 # 2. Extension navigateur pour l'affichage des ressources
 
@@ -67,16 +66,11 @@ Afin de tester le fonctionnement de ce système, il sera nécessaire de créer u
 
 Ce service **devra permettre de créer des *posts* contenant un lien vers une image ou une vidéo**.
 
-Il **devra aussi être possible d'ajouter des commentaires sous des posts, sous la forme d'un lien vers un texte**. Par soucis de simplicité, **il ne sera pas possible d'ajouter un commentaire à un commentaire déjà existant**.
+Il **devra aussi être possible d'ajouter des commentaires sous des posts, sous la forme d'un lien vers un texte**.
 
 Par ailleurs, aussi pour des raisons de simplicité, **ce service ne consistera qu'en une unique page affichant les posts, et leur commentaires associés**, de manière linéaire par ordre chronologique de la date et heure de publication, le plus récent en premier. Ainsi **il n'y aura pas de page affichant uniquement un post et ses commentaires**.
 
-## 3.1. Points généraux à définir
-
-- [ ] Doit-il y avoir une partie admin ?
-- [ ] L'utilisateur doit-il se connecter à un compte pour poster/commenter ?
-
-## 3.2. Backend du service
+## 3.1. Backend du service
 
 Le backend du service consistera en une API RESTful, et sera donc totalement indépendant de l'implémentation du frontend, et ce afin de pouvoir facilement développer les applications mobiles par la suite.
 
@@ -88,15 +82,9 @@ Cette API exposera deux endpoints:
 
 Ces différents endpoints, ainsi que les données acceptées et renvoyées sont définies précisément dans [les spécifications de l'API](API.md).
 
-### 3.2.1. Points à définir
+## 3.2. Frontend
 
-- [ ] Quel framework utiliser ? Flask ? NodeJS ?
-
-## 3.3. Frontend
-
-### 3.3.1. Points à définir
-
-- [ ] Quel framework utiliser ? Angular ? React ?
+La partie frontend du service de démo devra réflecter le comportement décrit ci-dessus. Il n'est pas nécessaire de construire une interface particulièrement développée, étant qu'il ne sert que de démonstration.
 
 # 4. Application mobile
 
