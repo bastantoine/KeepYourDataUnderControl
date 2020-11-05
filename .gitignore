@@ -1,2 +1,5 @@
 # Mac related files
 **/*.DS_STORE
+
+# VS Code stuff
+**/.vscode/*
