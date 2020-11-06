@@ -4,3 +4,7 @@
 
 # SQLITE DB file
 app.db
+
+# Python related files
+**/*.pyc
+**/__pycache__/*
