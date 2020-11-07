@@ -5,6 +5,7 @@ from flask import (
 )
 
 from models import (
+    Comment,
     db,
     Post,
 )
@@ -42,3 +43,15 @@ def posts_id(id_post):
     db.session.delete(post)
     db.session.commit()
     return ('', 200)
+
+@api.route('/posts/<int:id_post>/comments', methods=['POST'])
+def posts_id_comments(id_post):
+    # We could make it without this line, but this would assume that the post does exists
+    post = Post.query.get_or_404(id_post)
+
+    new_comment = Comment(related_post=post.id, **request.json)
+    db.session.add(new_comment)
+    db.session.commit()
+
+    db.session.refresh(new_comment) # To have the id of the newly created object
+    return jsonify(new_comment.to_dict())
