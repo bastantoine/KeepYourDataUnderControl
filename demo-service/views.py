@@ -55,3 +55,18 @@ def posts_id_comments(id_post):
 
     db.session.refresh(new_comment) # To have the id of the newly created object
     return jsonify(new_comment.to_dict())
+
+@api.route('/comments/<int:id_comment>', methods=['PUT', 'DELETE'])
+def comments_id(id_comment):
+    comment = Comment.query.get_or_404(id_comment)
+
+    if request.method == 'PUT':
+        comment.link = request.json.get('link', comment.link)
+        db.session.commit()
+
+        db.session.refresh(comment)
+        return jsonify(comment.to_dict())
+
+    db.session.delete(comment)
+    db.session.commit()
+    return ('', 200)
