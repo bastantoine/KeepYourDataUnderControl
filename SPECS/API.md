@@ -73,6 +73,8 @@ La réponse contient un JSON avec deux clés: `link` défini avec le même lien 
 
 Cette requête permet de mettre à jour un post, identifié par son identifiant `id` passé dans l'URL de la requête, en changeant la ressource utilisée.
 
+Dans le cas où le post identifié par l'`id` n'est pas trouvé, une erreur `404 Not found` sera retournée.
+
 Le corps doit être sous la forme d'un JSON avec comme unique clé `link` ayant comme valeur le lien de la ressource à utiliser dans la mise à jour du post.
 
 ```json
@@ -96,6 +98,8 @@ Supprime le post identifié par son identifiant `id` passé dans l'URL de la req
 
 Retourne un HTTP 200 si la suppression a été effectué correctement.
 
+Dans le cas où le post identifié par l'`id` n'est pas trouvé, une erreur `404 Not found` sera retournée.
+
 ## Others
 
 Tout autre requête HTTP autre que celles définies ce dessus retournera une erreur `405 Method not supported`.
@@ -107,6 +111,8 @@ Tout autre requête HTTP autre que celles définies ce dessus retournera une err
 Cette requête permet de créer un commentaire associé à un post.
 
 Le post auquel associer le commentaire est identifié par son identifiant `id` contenu dans l'URL de la requête.
+
+Dans le cas où le post identifié par l'`id` n'est pas trouvé, une erreur `404 Not found` sera retournée.
 
 Le corps doit être sous la forme d'un JSON avec comme unique clé `link` ayant comme valeur le lien de la ressource à utiliser pour le contenu du commentaire.
 
@@ -137,6 +143,8 @@ Cette requête permet de metre à jour un commentaire.
 
 Le commentaire à mettre à jour est identifié par son identifiant `id` contenu dans l'URL de la requête.
 
+Dans le cas où le commentaire identifié par l'`id` n'est pas trouvé, une erreur `404 Not found` sera retournée.
+
 Le corps doit être sous la forme d'un JSON avec comme unique clé `link` ayant comme valeur le lien de la ressource à utiliser pour le contenu du commentaire mis à jour.
 
 ```json
@@ -159,6 +167,8 @@ La réponse contient un JSON avec deux clés: `link` défini avec le même lien 
 Supprime le commentaire identifié par son identifiant `id` contenu dans l'URL de la requête.
 
 Retourne un HTTP 200 si la suppression a été effectué correctement.
+
+Dans le cas où le commentaire identifié par l'`id` n'est pas trouvé, une erreur `404 Not found` sera retournée.
 
 ## Others
 
