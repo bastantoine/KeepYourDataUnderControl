@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from "@angular/forms";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
 import { PostService } from "./post.service";
 import { CommentService } from "./comment.service";
@@ -12,6 +13,7 @@ import { Post } from "./models";
 })
 export class AppComponent implements OnInit {
 
+  faPlus = faPlus;
   allPosts: Post[];
   form_add_comment: FormGroup;
   form_add_post: FormGroup;
