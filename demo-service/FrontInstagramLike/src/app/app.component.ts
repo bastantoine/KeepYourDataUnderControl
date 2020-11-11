@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from "@angular/forms";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faPlus, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 
 import { PostService } from "./post.service";
 import { CommentService } from "./comment.service";
@@ -14,6 +14,8 @@ import { Post } from "./models";
 export class AppComponent implements OnInit {
 
   faPlus = faPlus;
+  faTrashAlt = faTrashAlt;
+
   allPosts: Post[];
   form_add_comment: FormGroup;
   form_add_post: FormGroup;
@@ -50,6 +52,10 @@ export class AppComponent implements OnInit {
     if (data.link !== "") {
       this.post.createPost(data.link).subscribe(() => window.location.reload());
     }
+  }
+
+  deleteComment(id_comment: Number) {
+    this.comment.deleteComment(id_comment).subscribe(() => window.location.reload());
   }
 
 }

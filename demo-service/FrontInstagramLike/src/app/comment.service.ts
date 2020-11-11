@@ -15,4 +15,8 @@ export class CommentService {
     return this.api.post<Comment>(["posts", String(id_post), "comments"], {"link": link});
   }
 
+  deleteComment(id_comment): Observable<Object> {
+    return this.api.delete(["comments", String(id_comment)]);
+  }
+
 }

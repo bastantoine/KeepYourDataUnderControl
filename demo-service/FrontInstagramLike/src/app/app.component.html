@@ -6,7 +6,7 @@
         <img src="{{post.link}}" class="card-img-top"/><br/>
         <div class="card-body">
           <p *ngFor="let comment of post.comments">
-            {{comment.link}}<br/>
+            {{comment.link}} <span class="float-right"><fa-icon [icon]="faTrashAlt" (click)="deleteComment(comment.id)"></fa-icon></span> <br/>
           </p>
           <form [formGroup]="form_add_comment" (ngSubmit)="addComment(post.id, form_add_comment.value)">
             <div class="input-group">
