@@ -1,5 +1,6 @@
 <div class="container">
   <div class="row card-columns">
+
     <div class="col-lg-4" *ngFor="let post of allPosts">
       <div class="card">
         <img src="{{post.link}}" class="card-img-top"/><br/>
@@ -7,6 +8,20 @@
           <p *ngFor="let comment of post.comments">
             {{comment.link}}<br/>
           </p>
+          <form [formGroup]="form_add_comment" (ngSubmit)="addComment(post.id, form_add_comment.value)">
+            <div class="input-group">
+              <input id="link" type="text" formControlName="link" class="form-control">
+              <div class="input-group-append">
+                <button class="btn btn-primary button" type="submit">Comment</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+            <input id="link" type="text" formControlName="link">
+            <button class="button" type="submit">Comment</button>
+          </form>
         </div>
       </div>
     </div>
