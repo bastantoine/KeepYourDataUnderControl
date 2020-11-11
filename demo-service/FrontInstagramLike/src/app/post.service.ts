@@ -14,4 +14,8 @@ export class PostService {
   getAllPosts(): Observable<{'posts': Post[]}> {
     return this.api.get('posts')
   }
+
+  createPost(link: String): Observable<Post> {
+    return this.api.post<Post>("posts", {"link": link});
+  }
 }
