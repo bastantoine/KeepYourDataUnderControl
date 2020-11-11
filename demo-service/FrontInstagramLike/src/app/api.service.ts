@@ -43,4 +43,8 @@ export class ApiService {
       'Content-Type': 'application/json'
     })});
   }
+
+  delete(paths: string|string[]): Observable<Object> {
+    return this.http.delete(this.prepareEndpoint(paths))
+  }
 }
