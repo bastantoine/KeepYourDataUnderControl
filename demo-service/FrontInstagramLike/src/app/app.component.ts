@@ -14,6 +14,7 @@ export class AppComponent implements OnInit {
 
   allPosts: Post[];
   form_add_comment: FormGroup;
+  form_add_post: FormGroup;
 
   constructor(
     private post: PostService,
@@ -23,6 +24,9 @@ export class AppComponent implements OnInit {
     this.form_add_comment = this.form_builder.group({
       link: '',
     });
+    this.form_add_post = this.form_builder.group({
+      link: ''
+    })
   }
 
   ngOnInit() {
@@ -36,6 +40,10 @@ export class AppComponent implements OnInit {
 
   addComment(id_post: Number, data) {
     this.comment.createCommentOnPost(id_post, data.link).subscribe(() => window.location.reload())
+  }
+
+  addPost(data) {
+    this.post.createPost(data.link).subscribe(() => window.location.reload());
   }
 
 }

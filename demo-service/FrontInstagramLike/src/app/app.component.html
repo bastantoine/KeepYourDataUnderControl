@@ -19,11 +19,22 @@
         </div>
       </div>
     </div>
-            <input id="link" type="text" formControlName="link">
-            <button class="button" type="submit">Comment</button>
+
+    <div class="col-lg-4">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Add a post</h5>
+          <form [formGroup]="form_add_post" (ngSubmit)="addPost(form_add_post.value)">
+            <div class="input-group">
+              <input id="link" type="text" formControlName="link">
+              <div class="input-group-append">
+                <button class="btn btn-primary button" type="submit">Add post</button>
+              </div>
+            </div>
           </form>
         </div>
       </div>
     </div>
+
   </div>
 </div>
