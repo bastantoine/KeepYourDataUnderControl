@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from "@angular/forms";
 
 import { PostService } from "./post.service";
+import { CommentService } from "./comment.service";
 import { Post } from "./models";
 
 @Component({
@@ -16,6 +17,7 @@ export class AppComponent implements OnInit {
 
   constructor(
     private post: PostService,
+    private comment: CommentService,
     private form_builder: FormBuilder,
   ) {
     this.form_add_comment = this.form_builder.group({
@@ -33,7 +35,7 @@ export class AppComponent implements OnInit {
   }
 
   addComment(id_post: Number, data) {
-    console.log(id_post, data);
+    this.comment.createCommentOnPost(id_post, data.link).subscribe(() => window.location.reload())
   }
 
 }
