@@ -58,4 +58,8 @@ export class AppComponent implements OnInit {
     this.comment.deleteComment(id_comment).subscribe(() => window.location.reload());
   }
 
+  deletePost(id_post: Number) {
+    this.post.deletePost(id_post).subscribe(() => window.location.reload());
+  }
+
 }
