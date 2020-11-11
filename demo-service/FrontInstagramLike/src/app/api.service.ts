@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Observable } from "rxjs";
 
 import { endpoint } from "./api-config";
@@ -34,5 +34,13 @@ export class ApiService {
 
   get<T>(path: string): Observable<T> {
     return this.http.get<T>(this.prepareEndpoint(path));
+  }
+
+  post<T>(paths: string|string[], body: {}): Observable<T> {
+    return this.http.post<T>(this.prepareEndpoint(paths), body, {headers: new HttpHeaders({
+      // We always set the Content-Type header to send JSON when making POST
+      // queries, because the API expects only JSON on POST endpoints
+      'Content-Type': 'application/json'
+    })});
   }
 }
