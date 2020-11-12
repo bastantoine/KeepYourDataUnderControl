@@ -42,13 +42,13 @@ export class AppComponent implements OnInit {
     this.post.getAllPosts().subscribe(data => this.allPosts = data.posts);
   }
 
-  addComment(id_post: Number, data) {
+  addComment(id_post: Number, data: {"link": String}) {
     if(data.link !== "") {
       this.comment.createCommentOnPost(id_post, data.link).subscribe(() => window.location.reload())
     }
   }
 
-  addPost(data) {
+  addPost(data: {"link": String}) {
     if (data.link !== "") {
       this.post.createPost(data.link).subscribe(() => window.location.reload());
     }
