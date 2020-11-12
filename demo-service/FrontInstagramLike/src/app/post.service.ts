@@ -22,4 +22,9 @@ export class PostService {
   deletePost(id_post): Observable<Object> {
     return this.api.delete(["posts", String(id_post)]);
   }
+
+  editPost(id_post: Number, new_link: String): Observable<Post> {
+    return this.api.put(["posts", String(id_post)], {'link': new_link});
+  }
+
 }

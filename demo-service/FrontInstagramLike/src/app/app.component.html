@@ -30,9 +30,20 @@
               </div>
             </div>
           </form>
+          <form [hidden]="!isFormDisplayed('post', post.id)"
+                [formGroup]="getEditForm('post', post.id)"
+                (ngSubmit)="editPost(post.id, getEditForm('post', post.id).value)">
+            <div class="input-group">
+              <input id="link" type="text" formControlName="link" class="form-control" placeholder="Link of the post image">
+              <div class="input-group-append">
+                <button class="btn btn-primary button" type="submit"><fa-icon [icon]="faCheck"></fa-icon></button>
+              </div>
+            </div>
+          </form>
         </div>
         <div class="card-footer">
           <fa-icon [icon]="faTrashAlt" (click)="deletePost(post.id)"></fa-icon>
+          <fa-icon [icon]="faPencilAlt" (click)="toggleForm('post', post.id)"></fa-icon>
         </div>
       </div>
     </div>
@@ -43,7 +54,7 @@
           <h5 class="card-title">Add a post</h5>
           <form [formGroup]="form_add_post" (ngSubmit)="addPost(form_add_post.value)">
             <div class="input-group">
-              <input id="link" type="text" formControlName="link" placeholder="Link of the post image">
+              <input id="link" type="text" formControlName="link" class="form-control" placeholder="Link of the post image">
               <div class="input-group-append">
                 <button class="btn btn-primary button" type="submit"><fa-icon [icon]="faPlus"></fa-icon></button>
               </div>

@@ -117,4 +117,8 @@ export class AppComponent implements OnInit {
     this.comment.editComment(id_comment, data.link).subscribe(() => window.location.reload());
   }
 
+  editPost(id_post: Number, data: {'link': String}) {
+    this.post.editPost(id_post, data.link).subscribe(() => window.location.reload());
+  }
+
 }
