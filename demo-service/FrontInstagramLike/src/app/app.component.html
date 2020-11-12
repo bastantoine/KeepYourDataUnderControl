@@ -5,9 +5,23 @@
       <div class="card">
         <img src="{{post.link}}" class="card-img-top"/><br/>
         <div class="card-body">
-          <p *ngFor="let comment of post.comments">
-            {{comment.link}} <span class="float-right"><fa-icon [icon]="faTrashAlt" (click)="deleteComment(comment.id)"></fa-icon></span> <br/>
-          </p>
+
+          <div *ngFor="let comment of post.comments" class="mb-3">
+            <span [hidden]="isFormDisplayed('comment', comment.id)">{{comment.link}}</span>
+            <form [hidden]="!isFormDisplayed('comment', comment.id)"
+                  [formGroup]="getEditForm('comment', comment.id)"
+                  (ngSubmit)="editComment(comment.id, getEditForm('comment', comment.id).value)">
+              <div class="input-group">
+                <input id="link" type="text" formControlName="link" class="form-control" placeholder="Link of the comment">
+                <div class="input-group-append">
+                  <button class="btn btn-primary button" type="submit"><fa-icon [icon]="faCheck"></fa-icon></button>
+                </div>
+              </div>
+            </form>
+            <span class="float-right"><fa-icon [icon]="faTrashAlt" (click)="deleteComment(comment.id)"></fa-icon></span>
+            <span class="float-right"><fa-icon [icon]="faPencilAlt" (click)="toggleForm('comment', comment.id)"></fa-icon></span><br/>
+          </div>
+
           <form [formGroup]="form_add_comment" (ngSubmit)="addComment(post.id, form_add_comment.value)">
             <div class="input-group">
               <input id="link" type="text" formControlName="link" class="form-control" placeholder="Link of the comment">

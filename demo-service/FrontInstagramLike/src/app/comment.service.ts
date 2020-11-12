@@ -19,4 +19,8 @@ export class CommentService {
     return this.api.delete(["comments", String(id_comment)]);
   }
 
+  editComment(id_comment: Number, new_link: String): Observable<Comment> {
+    return this.api.put(["comments", String(id_comment)], {'link': new_link});
+  }
+
 }
