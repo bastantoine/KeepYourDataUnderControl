@@ -10,7 +10,7 @@
           </p>
           <form [formGroup]="form_add_comment" (ngSubmit)="addComment(post.id, form_add_comment.value)">
             <div class="input-group">
-              <input id="link" type="text" formControlName="link" class="form-control">
+              <input id="link" type="text" formControlName="link" class="form-control" placeholder="Link of the comment">
               <div class="input-group-append">
                 <button class="btn btn-primary button" type="submit"><fa-icon [icon]="faPlus"></fa-icon></button>
               </div>
@@ -29,7 +29,7 @@
           <h5 class="card-title">Add a post</h5>
           <form [formGroup]="form_add_post" (ngSubmit)="addPost(form_add_post.value)">
             <div class="input-group">
-              <input id="link" type="text" formControlName="link">
+              <input id="link" type="text" formControlName="link" placeholder="Link of the post image">
               <div class="input-group-append">
                 <button class="btn btn-primary button" type="submit"><fa-icon [icon]="faPlus"></fa-icon></button>
               </div>
