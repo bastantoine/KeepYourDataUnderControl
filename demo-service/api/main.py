@@ -1,6 +1,7 @@
 import os
 
 from flask import Flask
+from flask_cors import CORS
 
 from views import api
 
@@ -13,6 +14,10 @@ def create_app():
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'app.db')
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     db.init_app(app)
+
+    # Allow CORS on all domains and for all routes. Definitively not the most secure, but by far the easiest
+    # See https://flask-cors.readthedocs.io/en/latest/#simple-usage
+    CORS(app)
 
     app.register_blueprint(api)
 
