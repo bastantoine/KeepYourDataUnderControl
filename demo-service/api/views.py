@@ -18,7 +18,7 @@ api = Blueprint('api', __name__, url_prefix="")
 def posts():
     if request.method == 'GET':
         return jsonify({
-            'posts': [post.to_dict(extended=True) for post in Post.query.all()]
+            'posts': [post.to_dict(extended=True) for post in Post.query.order_by(Post.timestamp_creation.desc())]
         })
 
     if not request.json:

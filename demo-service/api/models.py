@@ -48,7 +48,7 @@ class Comment(db.Model, SerializableModelMixin):
         """Class method that returns all comments linked to a given post identified by its id passed
         in parameter
         """
-        return Comment.query.filter_by(related_post=id_post)
+        return Comment.query.filter_by(related_post=id_post).order_by(Comment.timestamp_creation.desc())
 
     def to_dict(self, reduced=False):
         """Overloaded version of the to_dict method where, if reduced is passed to True, the dict
