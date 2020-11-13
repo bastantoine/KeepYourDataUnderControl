@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from flask import (
     Blueprint,
     jsonify,
@@ -22,7 +24,7 @@ def posts():
     if not request.json:
         return jsonify()
 
-    new_post = Post(**request.json)
+    new_post = Post(timestamp_creation=datetime.now(), **request.json)
     db.session.add(new_post)
     db.session.commit()
 
@@ -49,7 +51,7 @@ def posts_id_comments(id_post):
     # We could make it without this line, but this would assume that the post does exists
     post = Post.query.get_or_404(id_post)
 
-    new_comment = Comment(related_post=post.id, **request.json)
+    new_comment = Comment(related_post=post.id, timestamp_creation=datetime.now(), **request.json)
     db.session.add(new_comment)
     db.session.commit()
 
