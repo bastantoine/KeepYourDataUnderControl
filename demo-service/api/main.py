@@ -14,6 +14,10 @@ def create_app():
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'app.db')
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     db.init_app(app)
+    with app.app_context():
+        # Create all tables if needed. This doesn't work when updating the fields of a models, in
+        # this case either make the ALTER TABLE by hand or delete the .db file
+        db.create_all()
 
     # Allow CORS on all domains and for all routes. Definitively not the most secure, but by far the easiest
     # See https://flask-cors.readthedocs.io/en/latest/#simple-usage

@@ -21,6 +21,7 @@ class Post(db.Model, SerializableModelMixin):
     # the DB. In this case we are using SQLite which doesn't enforce any length (see
     # https://www.sqlite.org/faq.html#q9)
     link = db.Column(db.String())
+    timestamp_creation = db.Column(db.DateTime())
 
     def to_dict(self, extended=False):
         """Overloaded version of the to_dict method where, if extended is passed to True, the dict
@@ -40,6 +41,7 @@ class Comment(db.Model, SerializableModelMixin):
     id = db.Column(db.Integer, primary_key=True)
     link = db.Column(db.String())
     related_post = db.Column(db.ForeignKey('post.id', ondelete="CASCADE"), nullable=False)
+    timestamp_creation = db.Column(db.DateTime())
 
     @staticmethod
     def get_comments_of_post(id_post):
