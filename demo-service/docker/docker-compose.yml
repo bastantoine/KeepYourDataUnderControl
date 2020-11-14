@@ -8,3 +8,13 @@ services:
     container_name: 'demo-service-front'
     ports:
       - 1337:80
+    depends_on:
+      - api
+
+  api:
+    build:
+      context: ../
+      dockerfile: ./docker/api.dockerfile
+    container_name: 'demo-service-api'
+    ports:
+      - 5000:8000
