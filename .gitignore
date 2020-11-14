@@ -3,3 +3,14 @@
 
 # VS Code stuff
 **/.vscode/*
+
+# Python virtual env stuff
+**/venv/*
+**/start.sh
+
+# SQLITE DB file
+app.db
+
+# Python related files
+**/*.pyc
+**/__pycache__/*
