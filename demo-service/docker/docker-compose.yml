@@ -6,3 +6,5 @@ services:
       context: ../
       dockerfile: ./docker/front.dockerfile
     container_name: 'demo-service-front'
+    ports:
+      - 1337:80
