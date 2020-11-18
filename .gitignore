@@ -4,6 +4,9 @@
 # VS Code stuff
 **/.vscode/*
 
+# JetBrains files
+**/.idea/*
+
 # Python virtual env stuff
 **/venv/*
 **/start.sh
