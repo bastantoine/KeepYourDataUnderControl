@@ -1,29 +1,27 @@
-    $("e-img").each(function() {
-        var source = $(this).attr("src");
+$("e-img").each(function() {
+    var source = $(this).attr("src");
 
+    $(this).replaceWith("<img src=\"" + source + "\" " + getAttributes(this) + ">");
 
-        $(this).replaceWith("<img src=\"" + source + "\" " + getAttributes(this) + ">");
+    //getAttributes(this)
+});
 
-        //getAttributes(this)
-    });
+$("e-vid").each(function() {
+    var source = $(this).attr("src");
 
-    $("e-vid").each(function() {
-        var source = $(this).attr("src");
+    $(this).replaceWith("<video style='width: 500px'><source src='" + source + "'> </video>");
 
+    //getAttributes(this)
+});
 
-        $(this).replaceWith("<video style='width: 500px'><source src='" + source + "'> </video>");
+$("e-txt").each(function() {
+    var source = $(this).attr("src");
+    const element = this;
 
-        //getAttributes(this)
-    });
-
-    $("e-txt").each(function() {
-        var source = $(this).attr("src");
-        const element = this;
-
-        $.get(source, function (data) {
-            element.replaceWith(data);
-        })
-    });
+    $.get(source, function (data) {
+        element.replaceWith(data);
+    })
+});
 
 function getAttributes ( element ) {
     var attributes = element.attributes;
