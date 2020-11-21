@@ -50,8 +50,8 @@ export class ApiService {
 
   put<T>(paths: string|string[], body: {}): Observable<T> {
     return this.http.put<T>(this.prepareEndpoint(paths), body, {headers: new HttpHeaders({
-      // We always set the Content-Type header to send JSON when making POST
-      // queries, because the API expects only JSON on POST endpoints
+      // We always set the Content-Type header to send JSON when making PUT
+      // queries, because the API expects only JSON on PUT endpoints
       'Content-Type': 'application/json'
     })});
   }

@@ -4,7 +4,7 @@ import { faPlus, faTrashAlt, faPencilAlt, faCheck } from "@fortawesome/free-soli
 
 import { PostService } from "./post.service";
 import { CommentService } from "./comment.service";
-import { Post, Comment } from "./models";
+import { Post } from "./models";
 
 @Component({
   selector: 'app-root',
@@ -18,7 +18,47 @@ export class AppComponent implements OnInit {
   faPencilAlt = faPencilAlt;
   faCheck = faCheck;
 
+  // This is used to know whether or not an edit form is shown. It is
+  // instantiated in the constructor, but populated when we have fetched all
+  // forms and comments from the API.
+  // It should look like this:
+  // {
+  //   'post': [
+  //     1 -> false, // This means the edit form of the post of id 1 is not shown at the moment
+  //     2 -> false,
+  //     3 -> true,
+  //     ...
+  //   ],
+  //   'comment': [
+  //     1 -> false,
+  //     2 -> true, // This means the edit form of the comment of id 2 is shown right now
+  //     3 -> false,
+  //     ...
+  //   ]
+  // }
+
   isEditFormShown: Map<String, Map<Number, Boolean>>;
+  // This is used to store all edit forms for the posts and comments. It is
+  // instantiated in the constructor, but populated when we have fetched all
+  // forms and comments from the API.
+  // It should look like this:
+  // {
+  //   1 -> {
+  //     'form': <edit form of post 1>,
+  //     'comments': [
+  //       1 -> <edit form of comment 1>,
+  //       2 -> <edit form of comment 2>,
+  //       ...
+  //     ]
+  //   },
+  //   2 -> {
+  //     'form': <edit form of post 2>,
+  //     'comments': [
+  //       1 -> <edit form of comment 3>,
+  //       ...
+  //     ]
+  //   },
+  // }
   editForms: Map<Number, {form: FormGroup, comments: Map<Number, FormGroup>}>
 
   allPosts: Post[];
@@ -52,14 +92,20 @@ export class AppComponent implements OnInit {
     this.post.getAllPosts().subscribe(data => {
       this.allPosts = data.posts;
       this.allPosts.map(post => {
-        let form_post = this.form_builder.group({'link': post.link});
+        // On first load, the edit form is not shown
         this.isEditFormShown.get("post").set(post.id, false);
+
+        // Create the edit form already filled with the link the image of the post
+        let form_post = this.form_builder.group({'link': post.link});
         this.editForms.set(post.id, {
           form: form_post,
           comments: new Map()
         })
         post.comments.map(comment => {
+          // On first load, the edit form is not shown
           this.isEditFormShown.get("comment").set(comment.id, false);
+
+          // Create the edit form already filled with the link the text of the comment
           let form_comment = this.form_builder.group({'link': comment.link});
           this.editForms.get(post.id).comments.set(comment.id, form_comment)
         });
@@ -93,18 +139,26 @@ export class AppComponent implements OnInit {
   }
 
   toggleForm(type: String, id: Number) {
+    // type should either be "post" of "comment"
+    // id is the id of the model for which we want the edit form
     let val = this.isEditFormShown.get(type).get(id);
     this.isEditFormShown.get(type).set(id, val !== undefined ? !val : false);
   }
 
   getEditForm(type: String, id: Number) {
+    // type should either be "post" of "comment"
+    // id is the id of the model for which we want the edit form
     let form: FormGroup;
     this.editForms.forEach((val, index) => {
       if (type === "post" && id === index) {
+        // We want the edit form of a post and we have
+        // found one whose id match the one we got
         form = val.form;
       } else if (type === "comment") {
         val.comments.forEach((val, index) => {
           if (id === index) {
+            // We want the edit form of a comment and we have
+            // found one whose id match the one we got
             form = val;
           }
         });
