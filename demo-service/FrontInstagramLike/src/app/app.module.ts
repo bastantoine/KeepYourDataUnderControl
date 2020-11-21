@@ -5,10 +5,12 @@ import { ReactiveFormsModule} from "@angular/forms";
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
 
 import { AppComponent } from './app.component';
+import { EImgComponent } from './html-elements/e-img/e-img.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    EImgComponent,
   ],
   imports: [
     BrowserModule,
