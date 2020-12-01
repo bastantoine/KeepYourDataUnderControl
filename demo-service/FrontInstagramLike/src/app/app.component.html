@@ -3,7 +3,7 @@
 
     <div class="col-lg-4" *ngFor="let post of allPosts">
       <div class="card">
-        <span class="card-img-top e-img" hidden>{{post.link}}</span>
+        <e-img class="card-img-top" [attr.src]="post.link"></e-img>
         <div class="card-body">
 
           <div *ngFor="let comment of post.comments" class="mb-3">
