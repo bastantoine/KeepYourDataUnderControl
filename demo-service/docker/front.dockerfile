@@ -2,7 +2,7 @@ FROM node:12.19.0-alpine3.10 as ng_builder
 
 WORKDIR /usr/src/app
 COPY FrontInstagramLike/ .
-RUN npm install && npm run build
+RUN npm install && npm run build-prod
 
 FROM nginx:1.19.0-alpine
 
