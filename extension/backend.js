@@ -1,40 +1,37 @@
 $( document ).ready(function() {
-    $("span.e-img").each(function() {
-        var source = $(this).html();
+    $("e-img").each(function() {
+        const source = $(this).attr("src");
 
         $(this).replaceWith(`<img src="${source}" ${getAttributes(this)}>`);
     });
 
-    $("span.e-vid").each(function() {
-        var source = $(this).html();
+    $("e-vid").each(function() {
+        const source = $(this).attr("src");
 
-
-        $(this).replaceWith("<video style='width: 500px'><source src='" + source + "'> </video>");
-
-        //getAttributes(this)
+        $(this).replaceWith(`<video ${getAttributes(this)}><source src="${source}"></video>`);
     });
 
-    $("span.e-txt").each(function() {
-        var source = $(this).html();
+    $("e-txt").each(function() {
+        const source = $(this).attr("src");
+        const alternativeText =  $(this).attr("alt");
         const element = this;
 
         $.get(source, function (data) {
             element.replaceWith(data);
-        })
+          })
+            .fail(function () {
+                element.replaceWith(alternativeText);
+            });
     });
 });
 
 function getAttributes ( element ) {
-    var attributes = element.attributes;
-    var string = "";
+    const attributes = element.attributes;
+    let string = "";
 
     for (const attr of attributes) {
-        if (attr.name !== "hidden") {
-            if (attr.value) string += `${attr.name}=${attr.value} `;
-            else string += `${attr.name} `;
-        }
+        if (attr.value) string += `${attr.name}=${attr.value} `;
+        else string += `${attr.name} `;
     }
-
-    console.log(string)
     return string;
 }
