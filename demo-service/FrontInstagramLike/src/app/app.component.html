@@ -7,7 +7,7 @@
         <div class="card-body">
 
           <div *ngFor="let comment of post.comments" class="mb-3">
-            <span [hidden]="isFormDisplayed('comment', comment.id)"><span class="e-txt" hidden>{{comment.link}}</span></span>
+            <span [hidden]="isFormDisplayed('comment', comment.id)"><e-txt [attr.src]="comment.link"></e-txt></span>
             <form [hidden]="!isFormDisplayed('comment', comment.id)"
                   [formGroup]="getEditForm('comment', comment.id)"
                   (ngSubmit)="editComment(comment.id, getEditForm('comment', comment.id).value)">
