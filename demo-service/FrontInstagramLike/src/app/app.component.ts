@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup } from "@angular/forms";
 import { faPlus, faTrashAlt, faPencilAlt, faCheck } from "@fortawesome/free-solid-svg-icons";
 
 import { EImgComponent } from "./html-elements/e-img/e-img.component";
+import { ETxtComponent } from "./html-elements/e-txt/e-txt.component";
 import { PostService } from "./post.service";
 import { CommentService } from "./comment.service";
 import { Post } from "./models";
@@ -87,6 +88,9 @@ export class AppComponent implements OnInit {
 
     const eImgElement = createCustomElement(EImgComponent, {injector});
     customElements.define("e-img", eImgElement);
+
+    const eTxtElement = createCustomElement(ETxtComponent, {injector});
+    customElements.define("e-txt", eTxtElement);
   }
 
   ngOnInit() {
