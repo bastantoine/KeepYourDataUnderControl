@@ -1,7 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Injector } from '@angular/core';
+import { createCustomElement } from "@angular/elements";
 import { FormBuilder, FormGroup } from "@angular/forms";
 import { faPlus, faTrashAlt, faPencilAlt, faCheck } from "@fortawesome/free-solid-svg-icons";
 
+import { EImgComponent } from "./html-elements/e-img/e-img.component";
+import { ETxtComponent } from "./html-elements/e-txt/e-txt.component";
+import { EVidComponent } from './html-elements/e-vid/e-vid.component';
 import { PostService } from "./post.service";
 import { CommentService } from "./comment.service";
 import { Post } from "./models";
@@ -69,6 +73,7 @@ export class AppComponent implements OnInit {
     private post: PostService,
     private comment: CommentService,
     private form_builder: FormBuilder,
+    private injector: Injector,
   ) {
     this.isEditFormShown = new Map<String, Map<Number, Boolean>>([
       ["post", new Map<Number, Boolean>()],
@@ -81,6 +86,15 @@ export class AppComponent implements OnInit {
     this.form_add_post = this.form_builder.group({
       link: ''
     })
+
+    const eImgElement = createCustomElement(EImgComponent, {injector});
+    customElements.define("e-img", eImgElement);
+
+    const eTxtElement = createCustomElement(ETxtComponent, {injector});
+    customElements.define("e-txt", eTxtElement);
+
+    const eVidElement = createCustomElement(EVidComponent, {injector});
+    customElements.define("e-vid", eVidElement);
   }
 
   ngOnInit() {
