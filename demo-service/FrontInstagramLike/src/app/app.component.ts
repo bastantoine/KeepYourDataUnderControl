@@ -5,6 +5,7 @@ import { faPlus, faTrashAlt, faPencilAlt, faCheck } from "@fortawesome/free-soli
 
 import { EImgComponent } from "./html-elements/e-img/e-img.component";
 import { ETxtComponent } from "./html-elements/e-txt/e-txt.component";
+import { EVidComponent } from './html-elements/e-vid/e-vid.component';
 import { PostService } from "./post.service";
 import { CommentService } from "./comment.service";
 import { Post } from "./models";
@@ -91,6 +92,9 @@ export class AppComponent implements OnInit {
 
     const eTxtElement = createCustomElement(ETxtComponent, {injector});
     customElements.define("e-txt", eTxtElement);
+
+    const eVidElement = createCustomElement(EVidComponent, {injector});
+    customElements.define("e-vid", eVidElement);
   }
 
   ngOnInit() {
