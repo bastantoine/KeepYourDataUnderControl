@@ -8,6 +8,7 @@ from flask import (
     jsonify,
     request,
     Response,
+    send_from_directory,
 )
 from pymongo import MongoClient
 from werkzeug.utils import secure_filename
@@ -47,6 +48,14 @@ def upload_file():
     file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
     key = save_file_and_get_key(filename)
     return jsonify(url=os.path.join(request.base_url, key))
+
+
+@app.route('/<key>')
+def get_file(key):
+    filename = get_file_path(key)
+    if not filename:
+        abort(404)
+    return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 
 if __name__ == '__main__':
    app.run()
