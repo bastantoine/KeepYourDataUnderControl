@@ -12,5 +12,17 @@ services:
     volumes:
       - mongo-data:/data/db
 
+  api:
+    container_name: 'demo-storage-api'
+    build:
+      context: .
+    ports:
+      - 5001:8000
+    depends_on:
+      - mongo-db
+    volumes:
+      - files:/usr/src/app/upload_files
+
 volumes:
   mongo-data:
+  files:
