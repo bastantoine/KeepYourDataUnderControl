@@ -1,3 +1,4 @@
+import uuid
 import os
 
 from bson.objectid import ObjectId
@@ -52,6 +53,12 @@ def upload_file():
         abort(Response("Empty filename", 400))
 
     filename = secure_filename(file.filename)
+    if os.path.isfile(os.path.join(app.config['UPLOAD_FOLDER'], filename)):
+        extension = ""
+        if filename.find(".") != -1:
+            filename, extension = filename.rsplit(".")
+            extension = "." + extension
+        filename = filename + "_" + str(uuid.uuid4()) + extension
     file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
     key = save_file_and_get_key(filename)
     return jsonify(url=os.path.join(request.base_url, key))
