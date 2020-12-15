@@ -59,6 +59,7 @@ def upload_file():
             filename, extension = filename.rsplit(".")
             extension = "." + extension
         filename = filename + "_" + str(uuid.uuid4()) + extension
+
     file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
     key = save_file_and_get_key(filename)
     return jsonify(url=os.path.join(request.base_url, key))
@@ -82,6 +83,14 @@ def debug_main():
         'id': str(file['_id']),
         'link': file['link'],
     } for file in files_collection.find()])
+
+@app.route('/__debug__/delete/')
+def debug_delete_all():
+    files_collection = get_files_collection()
+    for file in files_collection.find():
+        files_collection.delete_one({"_id": file["_id"]})
+        os.remove(os.path.join(app.config['UPLOAD_FOLDER'], file["link"]))
+    return redirect(url_for('debug_main'))
 
 @app.route('/__debug__/delete/<key>')
 def debug_delete(key):
