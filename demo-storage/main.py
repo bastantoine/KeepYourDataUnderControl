@@ -10,12 +10,14 @@ from flask import (
     Response,
     send_from_directory,
 )
+from flask_cors import CORS
 from pymongo import MongoClient
 from werkzeug.utils import secure_filename
 
 load_dotenv()
 
 app = Flask(__name__)
+CORS(app)
 app.config['UPLOAD_FOLDER'] = os.environ.get("API_UPLOAD_FOLDER", "./")
 
 def save_file_and_get_key(filename):
