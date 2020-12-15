@@ -8,7 +8,10 @@ from flask import (
     jsonify,
     request,
     Response,
+    redirect,
+    render_template,
     send_from_directory,
+    url_for,
 )
 from flask_cors import CORS
 from pymongo import MongoClient
@@ -20,19 +23,21 @@ app = Flask(__name__)
 CORS(app)
 app.config['UPLOAD_FOLDER'] = os.environ.get("API_UPLOAD_FOLDER", "./")
 
-def save_file_and_get_key(filename):
+def get_files_collection():
     client = MongoClient(host=os.environ.get("MONGO_URL"))
-    files = client[os.environ.get("MONGO_DB_NAME")][os.environ.get("MONGO_FILES_COLLECTION_NAME")]
+    return client[os.environ.get("MONGO_DB_NAME")][os.environ.get("MONGO_FILES_COLLECTION_NAME")]
+
+def save_file_and_get_key(filename):
+    files_collection = get_files_collection()
     # MongoDB rquires all documents to have an _id field set, PyMongo does that for us and returns
     # it if we don't specify one in the first place when inserting document
     # https://pymongo.readthedocs.io/en/stable/faq.html#why-does-pymongo-add-an-id-field-to-all-of-my-documents
-    inserted_id = files.insert_one({"link": filename})
+    inserted_id = files_collection.insert_one({"link": filename})
     return str(inserted_id.inserted_id)
 
 def get_file_path(key):
-    client = MongoClient(host=os.environ.get("MONGO_URL"))
-    files = client[os.environ.get("MONGO_DB_NAME")][os.environ.get("MONGO_FILES_COLLECTION_NAME")]
-    file_found = files.find_one({"_id": ObjectId(key)})
+    files_collection = get_files_collection()
+    file_found = files_collection.find_one({"_id": ObjectId(key)})
     return file_found.get("link") if file_found else None
 
 
@@ -62,6 +67,20 @@ def get_file(key):
     if not filename:
         abort(404)
     return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
+
+@app.route('/__debug__')
+def debug_main():
+    files_collection = get_files_collection()
+    return render_template('main.html', files=[{
+        'id': str(file['_id']),
+        'link': file['link'],
+    } for file in files_collection.find()])
+
+@app.route('/__debug__/delete/<key>')
+def debug_delete(key):
+    files_collection = get_files_collection()
+    files_collection.delete_one({"_id": ObjectId(key)})
+    return redirect(url_for('debug_main'))
 
 if __name__ == '__main__':
    app.run()
