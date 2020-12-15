@@ -54,6 +54,10 @@ def upload_file():
 
 @app.route('/<key>')
 def get_file(key):
+    if key == 'favicon.ico':
+        # We don't have a favicon, let's make sure the
+        # requests to see it are treated separately
+        abort(404)
     filename = get_file_path(key)
     if not filename:
         abort(404)
