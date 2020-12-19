@@ -105,7 +105,7 @@ export class AppComponent implements OnInit {
   getAllPosts() {
     this.post.getAllPosts().subscribe(data => {
       this.allPosts = data.posts;
-      this.allPosts.map(post => {
+      this.allPosts.forEach(post => {
         // On first load, the edit form is not shown
         this.isEditFormShown.get("post").set(post.id, false);
 
@@ -115,7 +115,7 @@ export class AppComponent implements OnInit {
           form: form_post,
           comments: new Map()
         })
-        post.comments.map(comment => {
+        post.comments.forEach(comment => {
           // On first load, the edit form is not shown
           this.isEditFormShown.get("comment").set(comment.id, false);
 
