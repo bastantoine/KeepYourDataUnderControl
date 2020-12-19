@@ -41,7 +41,7 @@ export class AppComponent implements OnInit {
   //   ]
   // }
 
-  isEditFormShown: Map<String, Map<Number, Boolean>>;
+  isEditFormShown: Map<string, Map<number, boolean>>;
   // This is used to store all edit forms for the posts and comments. It is
   // instantiated in the constructor, but populated when we have fetched all
   // forms and comments from the API.
@@ -63,7 +63,7 @@ export class AppComponent implements OnInit {
   //     ]
   //   },
   // }
-  editForms: Map<Number, {form: FormGroup, comments: Map<Number, FormGroup>}>
+  editForms: Map<number, {form: FormGroup, comments: Map<number, FormGroup>}>
 
   allPosts: Post[];
   form_add_comment: FormGroup;
@@ -75,9 +75,9 @@ export class AppComponent implements OnInit {
     private form_builder: FormBuilder,
     private injector: Injector,
   ) {
-    this.isEditFormShown = new Map<String, Map<Number, Boolean>>([
-      ["post", new Map<Number, Boolean>()],
-      ["comment", new Map<Number, Boolean>()],
+    this.isEditFormShown = new Map<string, Map<number, boolean>>([
+      ["post", new Map<number, boolean>()],
+      ["comment", new Map<number, boolean>()],
     ]);
     this.editForms = new Map();
     this.form_add_comment = this.form_builder.group({
@@ -127,39 +127,39 @@ export class AppComponent implements OnInit {
     });
   }
 
-  addComment(id_post: Number, data: {"link": String}) {
+  addComment(id_post: number, data: {"link": string}) {
     if(data.link !== "") {
       this.comment.createCommentOnPost(id_post, data.link).subscribe(() => window.location.reload())
     }
   }
 
-  addPost(data: {"link": String}) {
+  addPost(data: {"link": string}) {
     if (data.link !== "") {
       this.post.createPost(data.link).subscribe(() => window.location.reload());
     }
   }
 
-  deleteComment(id_comment: Number) {
+  deleteComment(id_comment: number) {
     this.comment.deleteComment(id_comment).subscribe(() => window.location.reload());
   }
 
-  deletePost(id_post: Number) {
+  deletePost(id_post: number) {
     this.post.deletePost(id_post).subscribe(() => window.location.reload());
   }
 
-  isFormDisplayed(type: String, id: Number) {
+  isFormDisplayed(type: string, id: number) {
     let val = this.isEditFormShown.get(type).get(id);
     return val !== undefined ? val : false;
   }
 
-  toggleForm(type: String, id: Number) {
+  toggleForm(type: string, id: number) {
     // type should either be "post" of "comment"
     // id is the id of the model for which we want the edit form
     let val = this.isEditFormShown.get(type).get(id);
     this.isEditFormShown.get(type).set(id, val !== undefined ? !val : false);
   }
 
-  getEditForm(type: String, id: Number) {
+  getEditForm(type: string, id: number) {
     // type should either be "post" of "comment"
     // id is the id of the model for which we want the edit form
     let form: FormGroup;
@@ -181,11 +181,11 @@ export class AppComponent implements OnInit {
     return form;
   }
 
-  editComment(id_comment: Number, data: {'link': String}) {
+  editComment(id_comment: number, data: {'link': string}) {
     this.comment.editComment(id_comment, data.link).subscribe(() => window.location.reload());
   }
 
-  editPost(id_post: Number, data: {'link': String}) {
+  editPost(id_post: number, data: {'link': string}) {
     this.post.editPost(id_post, data.link).subscribe(() => window.location.reload());
   }
 
