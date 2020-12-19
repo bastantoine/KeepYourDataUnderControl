@@ -163,17 +163,17 @@ export class AppComponent implements OnInit {
     // type should either be "post" of "comment"
     // id is the id of the model for which we want the edit form
     let form: FormGroup;
-    this.editForms.forEach((val, index) => {
-      if (type === "post" && id === index) {
+    this.editForms.forEach((form_post, index_post) => {
+      if (type === "post" && id === index_post) {
         // We want the edit form of a post and we have
         // found one whose id match the one we got
-        form = val.form;
+        form = form_post.form;
       } else if (type === "comment") {
-        val.comments.forEach((val, index) => {
-          if (id === index) {
+        form_post.comments.forEach((form_comment, index_comment) => {
+          if (id === index_comment) {
             // We want the edit form of a comment and we have
             // found one whose id match the one we got
-            form = val;
+            form = form_comment;
           }
         });
       }
