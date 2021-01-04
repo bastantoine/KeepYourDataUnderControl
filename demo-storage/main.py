@@ -62,7 +62,7 @@ def upload_file():
 
     file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
     key = save_file_and_get_key(filename)
-    return jsonify(url=os.path.join(request.url_root, 'api' ,key))
+    return jsonify(url=os.path.join(os.environ.get("BASE_URL") ,key))
 
 
 @app.route('/<key>')
@@ -79,10 +79,12 @@ def get_file(key):
 @app.route('/__debug__')
 def debug_main():
     files_collection = get_files_collection()
-    return render_template('main.html', files=[{
-        'id': str(file['_id']),
-        'link': file['link'],
-    } for file in files_collection.find()])
+    return render_template('main.html',
+        base_url=os.environ.get("BASE_URL"),
+        files=[{
+            'id': str(file['_id']),
+            'link': file['link'],
+        } for file in files_collection.find()])
 
 @app.route('/__debug__/delete/')
 def debug_delete_all():
