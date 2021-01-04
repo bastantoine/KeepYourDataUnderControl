@@ -62,7 +62,7 @@ def upload_file():
 
     file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
     key = save_file_and_get_key(filename)
-    return jsonify(url=os.path.join(request.base_url, key))
+    return jsonify(url=os.path.join(request.url_root, key))
 
 
 @app.route('/<key>')
