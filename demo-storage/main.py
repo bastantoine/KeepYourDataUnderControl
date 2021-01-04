@@ -24,11 +24,6 @@ app = Flask(__name__)
 CORS(app)
 app.config['UPLOAD_FOLDER'] = os.environ.get("API_UPLOAD_FOLDER", "./")
 
-# Register a new Jinja filter that allow the usage of os.path.join
-# From: https://github.com/pallets/jinja/issues/367#issuecomment-56326635
-jinja_env = app.jinja_env
-jinja_env.filters['path_join'] = lambda paths: os.path.join(*paths)
-
 def get_files_collection():
     client = MongoClient(host=os.environ.get("MONGO_URL"))
     return client[os.environ.get("MONGO_DB_NAME")][os.environ.get("MONGO_FILES_COLLECTION_NAME")]

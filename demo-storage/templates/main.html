@@ -22,8 +22,8 @@
                         {% for file in files %}
                             <tr>
                                 <td>{{ file.id }}</td>
-                                <td><a href="{{ [base_url, url_for('get_file', key=file.id)]|path_join }}" target="_blank">{{ file.link }}</a></td>
-                                <td><a href="{{ [base_url, url_for('debug_delete', key=file.id)]|path_join }}">Delete</a></td>
+                                <td><a href="{{ base_url.rstrip('/') }}{{ url_for('get_file', key=file.id) }}" target="_blank">{{ file.link }}</a></td>
+                                <td><a href="{{ base_url.rstrip('/') }}{{ url_for('debug_delete', key=file.id) }}">Delete</a></td>
                             </tr>
                         {% endfor %}
                     </tbody>
