@@ -92,7 +92,7 @@ def debug_delete_all():
     for file in files_collection.find():
         files_collection.delete_one({"_id": file["_id"]})
         os.remove(os.path.join(app.config['UPLOAD_FOLDER'], file["link"]))
-    return redirect(url_for('debug_main'))
+    return redirect(os.path.join(os.environ.get("BASE_URL"), url_for('debug_main')))
 
 @app.route('/__debug__/delete/<key>')
 def debug_delete(key):
@@ -102,7 +102,7 @@ def debug_delete(key):
         abort(404)
     files_collection.delete_one({"_id": ObjectId(key)})
     os.remove(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-    return redirect(url_for('debug_main'))
+    return redirect(os.path.join(os.environ.get("BASE_URL"), url_for('debug_main')))
 
 if __name__ == '__main__':
    app.run()
