@@ -109,8 +109,9 @@ export class AppComponent implements OnInit {
         // On first load, the edit form is not shown
         this.isEditFormShown.get("post").set(post.id, false);
 
-        // Create the edit form already filled with the link the image of the post
-        let form_post = this.form_builder.group({'link': post.link});
+        // Create the edit form, but don't fill it, as it has a file input that
+        // doesn't allow to be prefilled
+        let form_post = this.form_builder.group({'link': ''});
         this.editForms.set(post.id, {
           form: form_post,
           comments: new Map()
