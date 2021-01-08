@@ -1,8 +1,14 @@
 FROM node:12.19.0-alpine3.10 as ng_builder
 
+# Install node modules first, without copying all files
+# This allow to cache the install step
+COPY FrontInstagramLike/package.json /tmp/
+RUN cd /tmp && npm install
+
 WORKDIR /usr/src/app
+RUN cp -a /tmp/node_modules .
 COPY FrontInstagramLike/ .
-RUN npm install && npm run build-prod
+RUN npm run build-prod
 
 FROM nginx:1.19.0-alpine
 
