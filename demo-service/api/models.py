@@ -1,4 +1,10 @@
+import os
+import uuid
+
 from flask_sqlalchemy import SQLAlchemy
+from werkzeug.utils import secure_filename
+
+import config
 
 
 db = SQLAlchemy()
@@ -36,6 +42,18 @@ class Post(db.Model, SerializableModelMixin):
             self_to_dict['comments'] = [comment.to_dict(reduced=True) for comment in Comment.get_comments_of_post(self.id)]
         return self_to_dict
 
+    @staticmethod
+    def add_file(file):
+        filename = secure_filename(file.filename)
+        if os.path.isfile(os.path.join(config.UPLOAD_FOLDER, filename)):
+            extension = ""
+            if filename.find(".") != -1:
+                filename, extension = filename.rsplit(".")
+                extension = "." + extension
+            filename = filename + "_" + str(uuid.uuid4()) + extension
+
+        file.save(os.path.join(config.UPLOAD_FOLDER, filename))
+        return filename
 
 class Comment(db.Model, SerializableModelMixin):
     id = db.Column(db.Integer, primary_key=True)
