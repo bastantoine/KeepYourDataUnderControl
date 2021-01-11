@@ -3,6 +3,7 @@ import os
 from flask import Flask
 from flask_cors import CORS
 
+import config
 from views import api
 
 def create_app():
@@ -13,6 +14,7 @@ def create_app():
     basedir = os.path.abspath(os.path.dirname(__file__))
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'app.db')
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    app.config['UPLOAD_FOLDER'] = config.UPLOAD_FOLDER
     db.init_app(app)
     with app.app_context():
         # Create all tables if needed. This doesn't work when updating the fields of a models, in
