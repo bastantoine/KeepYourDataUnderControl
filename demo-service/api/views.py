@@ -23,9 +23,6 @@ def posts():
             'posts': [post.to_dict(extended=True) for post in Post.query.order_by(Post.timestamp_creation.desc())]
         })
 
-    if not request.json:
-        return jsonify()
-
     # Taken from: https://flask.palletsprojects.com/en/1.1.x/patterns/fileuploads/
     if 'file' not in request.files:
         abort(Response("Missing file", 400))
@@ -35,7 +32,7 @@ def posts():
         abort(Response("Empty filename", 400))
 
     filename = Post.add_file(file)
-    new_post = Post(timestamp_creation=datetime.now(), filename=filename, **request.json)
+    new_post = Post(timestamp_creation=datetime.now(), filename=filename)
     db.session.add(new_post)
     db.session.commit()
 
@@ -71,7 +68,7 @@ def posts_id_comments(id_post):
     # We could make it without this line, but this would assume that the post does exists
     post = Post.query.get_or_404(id_post)
 
-    new_comment = Comment(related_post=post.id, timestamp_creation=datetime.now(), **request.json)
+    new_comment = Comment(related_post=post.id, timestamp_creation=datetime.now())
     db.session.add(new_comment)
     db.session.commit()
 
