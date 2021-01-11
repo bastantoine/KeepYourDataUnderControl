@@ -36,7 +36,7 @@ def posts_id(id_post):
     post = Post.query.get_or_404(id_post)
 
     if request.method == 'PUT':
-        post.link = request.json.get('link', post.link)
+        post.filename = request.json.get('link', post.filename)
         db.session.commit()
 
         db.session.refresh(post)

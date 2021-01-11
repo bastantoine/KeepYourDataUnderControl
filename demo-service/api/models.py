@@ -26,7 +26,7 @@ class Post(db.Model, SerializableModelMixin):
     # Note: db.String can take a length param used when creating the column in
     # the DB. In this case we are using SQLite which doesn't enforce any length (see
     # https://www.sqlite.org/faq.html#q9)
-    link = db.Column(db.String())
+    filename = db.Column(db.String())
     timestamp_creation = db.Column(db.DateTime())
 
     def to_dict(self, extended=False):
