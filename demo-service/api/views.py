@@ -16,7 +16,7 @@ from models import (
 
 api = Blueprint('api', __name__, url_prefix="")
 
-@api.route('posts', methods=['GET', 'POST'])
+@api.route('/posts', methods=['GET', 'POST'])
 def posts():
     if request.method == 'GET':
         return jsonify({
