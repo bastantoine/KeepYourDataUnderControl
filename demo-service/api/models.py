@@ -55,6 +55,10 @@ class Post(db.Model, SerializableModelMixin):
         file.save(os.path.join(config.UPLOAD_FOLDER, filename))
         return filename
 
+    @staticmethod
+    def delete_file(filename):
+        os.remove(os.path.join(config.UPLOAD_FOLDER, filename))
+
 class Comment(db.Model, SerializableModelMixin):
     id = db.Column(db.Integer, primary_key=True)
     link = db.Column(db.String())
