@@ -2,6 +2,7 @@ import os
 import uuid
 
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import event
 from werkzeug.utils import secure_filename
 
 import config
@@ -58,6 +59,14 @@ class Post(db.Model, SerializableModelMixin):
     @staticmethod
     def delete_file(filename):
         os.remove(os.path.join(config.UPLOAD_FOLDER, filename))
+
+
+# Register an event handler to automatically delete the file of a post upon its deletion
+# See https://docs.sqlalchemy.org/en/13/orm/events.html#sqlalchemy.orm.events.MapperEvents.before_delete
+@event.listens_for(Post, 'before_delete')
+def receive_before_delete(mapper, connection, target):
+    Post.delete_file(target.filename)
+
 
 class Comment(db.Model, SerializableModelMixin):
     id = db.Column(db.Integer, primary_key=True)
