@@ -14,7 +14,11 @@ def create_app():
     basedir = os.path.abspath(os.path.dirname(__file__))
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'app.db')
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
     app.config['UPLOAD_FOLDER'] = config.UPLOAD_FOLDER
+    if not os.path.exists(config.UPLOAD_FOLDER):
+        os.makedirs(config.UPLOAD_FOLDER)
+
     db.init_app(app)
     with app.app_context():
         # Create all tables if needed. This doesn't work when updating the fields of a models, in
