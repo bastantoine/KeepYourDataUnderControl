@@ -47,7 +47,16 @@ def posts_id(id_post):
     post = Post.query.get_or_404(id_post)
 
     if request.method == 'PUT':
-        post.filename = request.json.get('link', post.filename)
+        if 'file' not in request.files:
+            abort(Response("Missing file", 400))
+
+        file = request.files['file']
+        if file.filename == '':
+            abort(Response("Empty filename", 400))
+
+        Post.delete_file(post.filename)
+        filename = Post.add_file(file)
+        post.filename = filename
         db.session.commit()
 
         db.session.refresh(post)
