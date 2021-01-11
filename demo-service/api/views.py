@@ -83,7 +83,7 @@ def comments_id(id_comment):
     comment = Comment.query.get_or_404(id_comment)
 
     if request.method == 'PUT':
-        comment.link = request.json.get('link', comment.link)
+        comment.comment = request.json.get('link', comment.comment)
         db.session.commit()
 
         db.session.refresh(comment)

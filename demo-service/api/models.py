@@ -70,7 +70,7 @@ def receive_before_delete(mapper, connection, target):
 
 class Comment(db.Model, SerializableModelMixin):
     id = db.Column(db.Integer, primary_key=True)
-    link = db.Column(db.String())
+    comment = db.Column(db.String())
     related_post = db.Column(db.ForeignKey('post.id', ondelete="CASCADE"), nullable=False)
     timestamp_creation = db.Column(db.DateTime())
 
