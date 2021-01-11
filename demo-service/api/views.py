@@ -1,9 +1,11 @@
 from datetime import datetime
 
 from flask import (
+    abort,
     Blueprint,
     jsonify,
     request,
+    Response,
 )
 
 from models import (
@@ -24,7 +26,16 @@ def posts():
     if not request.json:
         return jsonify()
 
-    new_post = Post(timestamp_creation=datetime.now(), **request.json)
+    # Taken from: https://flask.palletsprojects.com/en/1.1.x/patterns/fileuploads/
+    if 'file' not in request.files:
+        abort(Response("Missing file", 400))
+
+    file = request.files['file']
+    if file.filename == '':
+        abort(Response("Empty filename", 400))
+
+    filename = Post.add_file(file)
+    new_post = Post(timestamp_creation=datetime.now(), filename=filename, **request.json)
     db.session.add(new_post)
     db.session.commit()
 
