@@ -41,6 +41,7 @@ class Post(db.Model, SerializableModelMixin):
         self_to_dict = super().to_dict()
         if extended:
             self_to_dict['comments'] = [comment.to_dict(reduced=True) for comment in Comment.get_comments_of_post(self.id)]
+        self_to_dict['filename'] = os.path.join(config.ROOT_PATH, self_to_dict['filename'])
         return self_to_dict
 
     @staticmethod
