@@ -6,8 +6,10 @@ from flask import (
     jsonify,
     request,
     Response,
+    send_from_directory,
 )
 
+import config
 from models import (
     Comment,
     db,
@@ -15,6 +17,16 @@ from models import (
 )
 
 api = Blueprint('api', __name__, url_prefix="")
+
+@api.route('/<filename>')
+def serve_file(filename):
+    if filename == 'favicon.ico':
+        # We don't have a favicon, let's make sure the
+        # requests to see it are treated separately
+        abort(404)
+    if not filename:
+        abort(404)
+    return send_from_directory(config.UPLOAD_FOLDER, filename)
 
 @api.route('/posts', methods=['GET', 'POST'])
 def posts():
