@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+<form action="test.html" method="get">
+    <input type="file" class="self-storage" name="file_img">
+    <input type="text" class="self-storage" name="file_txt">
+    <button type="submit">Test</button>
+</form>
+<form action="test.html" method="post" class="safe-storage">
+    <input type="text" class="self-storage">
+</form>
+<a href="https://google.com">henlo</a>
+</body>
+<script>
+    /**
+    $( document ).ready(function() {
+        $("form").submit(function (event) {
+            event.preventDefault();
+            let form_data = new FormData($(this)[0]);
+            const form_url = $(this).attr('action');
+            const form_method = $(this).attr('method');
+
+            $(this).children("input.self-storage").each(function () {
+                let form = new FormData();
+                switch ($(this).attr('type')) {
+                    case 'text':
+                        let blob = new Blob([this.value], {type: "text/plain;charset=utf-8"});
+                        form.append("file", blob, "tpm.txt");
+                        break;
+                    case 'file':
+                        form.append("file", this.files[0], "tpm.jpg");
+                        break;
+                    default:
+                        throw 'Input type is not supported'
+                }
+
+                const inputName = $(this).attr('name');
+
+                let settings = {
+                    "url": "http://imta.bastien-antoine.fr/api/",
+                    "method": "POST",
+                    "timeout": 0,
+                    "processData": false,
+                    "mimeType": "multipart/form-data",
+                    "contentType": false,
+                    "data": form
+                };
+
+                $.ajax(settings).done(function (response) {
+                    console.log(response);
+                    form_data.set(inputName, response.url);
+                });
+            })
+
+            $.ajax({
+                "url": form_url,
+                "method": form_method,
+                "data": form_data,
+                "processData": false
+            })
+        });
+    });**/
+</script>
+</html>
+<img src="" alt="">
+    <e-img src="image.jpg" alt="text" class="imageClass">
