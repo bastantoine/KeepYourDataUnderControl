@@ -32,6 +32,12 @@ export class ApiService {
     return _endpoint;
   }
 
+  generateFormDataForFile(file: File): FormData {
+    const formData = new FormData();
+    formData.append('file', file, file.name);
+    return formData;
+  }
+
   get<T>(path: string): Observable<T> {
     return this.http.get<T>(this.prepareEndpoint(path));
   }
