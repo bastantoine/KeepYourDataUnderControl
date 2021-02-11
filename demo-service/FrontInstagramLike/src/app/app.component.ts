@@ -145,9 +145,9 @@ export class AppComponent implements OnInit {
     }
   }
 
-  addPost(data: {"link": string}) {
-    if (data.link !== "") {
-      this.post.createPost(data.link).subscribe(() => window.location.reload());
+  addPost() {
+    if (this.fileToUpload !== null) {
+      this.post.createPost(this.fileToUpload).subscribe(() => window.location.reload());
     }
   }
 
@@ -197,8 +197,10 @@ export class AppComponent implements OnInit {
     this.comment.editComment(id_comment, data.link).subscribe(() => window.location.reload());
   }
 
-  editPost(id_post: number, data: {'link': string}) {
-    this.post.editPost(id_post, data.link).subscribe(() => window.location.reload());
+  editPost(id_post: number) {
+    if (this.fileToUpload !== null) {
+      this.post.editPost(id_post, this.fileToUpload).subscribe(() => window.location.reload());
+    }
   }
 
 }

@@ -1,3 +1,4 @@
+import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from "rxjs";
 
@@ -16,7 +17,9 @@ export class PostService {
   }
 
   createPost(file: File): Observable<Post> {
-    return this.api.post<Post>("posts", this.api.generateFormDataForFile(file));
+    // We shouldn't set a ContentType Header, so that the boundary is correctly set upon sending
+    // https://stackoverflow.com/a/40362274/10104112
+    return this.api.post<Post>("posts", this.api.generateFormDataForFile(file), new HttpHeaders());
   }
 
   deletePost(id_post): Observable<Object> {
@@ -24,7 +27,7 @@ export class PostService {
   }
 
   editPost(id_post: Number, new_file: File): Observable<Post> {
-    return this.api.put(["posts", String(id_post)], this.api.generateFormDataForFile(new_file));
+    return this.api.put(["posts", String(id_post)], this.api.generateFormDataForFile(new_file), new HttpHeaders());
   }
 
 }
