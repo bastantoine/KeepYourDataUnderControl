@@ -69,12 +69,16 @@ export class AppComponent implements OnInit {
   form_add_comment: FormGroup;
   form_add_post: FormGroup;
 
+  fileToUpload: File;
+
   constructor(
     private post: PostService,
     private comment: CommentService,
     private form_builder: FormBuilder,
     private injector: Injector,
   ) {
+    this.fileToUpload = null;
+
     this.isEditFormShown = new Map<string, Map<number, boolean>>([
       ["post", new Map<number, boolean>()],
       ["comment", new Map<number, boolean>()],
@@ -128,15 +132,22 @@ export class AppComponent implements OnInit {
     });
   }
 
+  onFileChange(event: { target: { files: File[]; }; }) {
+    // From https://stackoverflow.com/a/47938117
+    if(event.target.files && event.target.files.length) {
+      this.fileToUpload = event.target.files[0]
+    }
+  }
+
   addComment(id_post: number, data: {"link": string}) {
     if(data.link !== "") {
       this.comment.createCommentOnPost(id_post, data.link).subscribe(() => window.location.reload())
     }
   }
 
-  addPost(data: {"link": string}) {
-    if (data.link !== "") {
-      this.post.createPost(data.link).subscribe(() => window.location.reload());
+  addPost() {
+    if (this.fileToUpload !== null) {
+      this.post.createPost(this.fileToUpload).subscribe(() => window.location.reload());
     }
   }
 
@@ -186,8 +197,10 @@ export class AppComponent implements OnInit {
     this.comment.editComment(id_comment, data.link).subscribe(() => window.location.reload());
   }
 
-  editPost(id_post: number, data: {'link': string}) {
-    this.post.editPost(id_post, data.link).subscribe(() => window.location.reload());
+  editPost(id_post: number) {
+    if (this.fileToUpload !== null) {
+      this.post.editPost(id_post, this.fileToUpload).subscribe(() => window.location.reload());
+    }
   }
 
 }

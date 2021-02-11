@@ -32,14 +32,18 @@ export class ApiService {
     return _endpoint;
   }
 
+  generateFormDataForFile(file: File): FormData {
+    const formData = new FormData();
+    formData.append('file', file, file.name);
+    return formData;
+  }
+
   get<T>(path: string): Observable<T> {
     return this.http.get<T>(this.prepareEndpoint(path));
   }
 
-  post<T>(paths: string|string[], body: {}): Observable<T> {
-    return this.http.post<T>(this.prepareEndpoint(paths), body, {headers: new HttpHeaders({
-      // We always set the Content-Type header to send JSON when making POST
-      // queries, because the API expects only JSON on POST endpoints
+  post<T>(paths: string|string[], body: {}, headers?: HttpHeaders): Observable<T> {
+    return this.http.post<T>(this.prepareEndpoint(paths), body, {headers: headers ? headers : new HttpHeaders({
       'Content-Type': 'application/json'
     })});
   }
@@ -48,10 +52,8 @@ export class ApiService {
     return this.http.delete(this.prepareEndpoint(paths))
   }
 
-  put<T>(paths: string|string[], body: {}): Observable<T> {
-    return this.http.put<T>(this.prepareEndpoint(paths), body, {headers: new HttpHeaders({
-      // We always set the Content-Type header to send JSON when making PUT
-      // queries, because the API expects only JSON on PUT endpoints
+  put<T>(paths: string|string[], body: {}, headers?: HttpHeaders): Observable<T> {
+    return this.http.put<T>(this.prepareEndpoint(paths), body, {headers: headers ? headers: new HttpHeaders({
       'Content-Type': 'application/json'
     })});
   }

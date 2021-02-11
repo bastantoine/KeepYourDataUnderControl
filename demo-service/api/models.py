@@ -1,4 +1,11 @@
+import os
+import uuid
+
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import event
+from werkzeug.utils import secure_filename
+
+import config
 
 
 db = SQLAlchemy()
@@ -20,7 +27,7 @@ class Post(db.Model, SerializableModelMixin):
     # Note: db.String can take a length param used when creating the column in
     # the DB. In this case we are using SQLite which doesn't enforce any length (see
     # https://www.sqlite.org/faq.html#q9)
-    link = db.Column(db.String())
+    filename = db.Column(db.String())
     timestamp_creation = db.Column(db.DateTime())
 
     def to_dict(self, extended=False):
@@ -34,12 +41,37 @@ class Post(db.Model, SerializableModelMixin):
         self_to_dict = super().to_dict()
         if extended:
             self_to_dict['comments'] = [comment.to_dict(reduced=True) for comment in Comment.get_comments_of_post(self.id)]
+        self_to_dict['filename'] = os.path.join(config.ROOT_PATH, self_to_dict['filename'])
         return self_to_dict
+
+    @staticmethod
+    def add_file(file):
+        filename = secure_filename(file.filename)
+        if os.path.isfile(os.path.join(config.UPLOAD_FOLDER, filename)):
+            extension = ""
+            if filename.find(".") != -1:
+                filename, extension = filename.rsplit(".")
+                extension = "." + extension
+            filename = filename + "_" + str(uuid.uuid4()) + extension
+
+        file.save(os.path.join(config.UPLOAD_FOLDER, filename))
+        return filename
+
+    @staticmethod
+    def delete_file(filename):
+        os.remove(os.path.join(config.UPLOAD_FOLDER, filename))
+
+
+# Register an event handler to automatically delete the file of a post upon its deletion
+# See https://docs.sqlalchemy.org/en/13/orm/events.html#sqlalchemy.orm.events.MapperEvents.before_delete
+@event.listens_for(Post, 'before_delete')
+def receive_before_delete(mapper, connection, target):
+    Post.delete_file(target.filename)
 
 
 class Comment(db.Model, SerializableModelMixin):
     id = db.Column(db.Integer, primary_key=True)
-    link = db.Column(db.String())
+    comment = db.Column(db.String())
     related_post = db.Column(db.ForeignKey('post.id', ondelete="CASCADE"), nullable=False)
     timestamp_creation = db.Column(db.DateTime())
 
