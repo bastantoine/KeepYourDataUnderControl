@@ -2,57 +2,70 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>hello</title>
-    <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
-    <script>
-        /**
-        $( document ).ready(function() {
-            $("e_img").each(function() {
-                var source = $(this).attr("src");
-
-
-                $(this).replaceWith("<img src=\"" + source + "\" " + getAttributes(this) + ">");
-
-                //getAttributes(this)
-            });
-
-            $("e_vid").each(function() {
-                var source = $(this).attr("src");
-
-
-                $(this).replaceWith("<video style='width: 500px'><source src='" + source + "'> </video>");
-
-                //getAttributes(this)
-            });
-
-            $("e_txt").each(function() {
-                var source = $(this).attr("src");
-                const element = this;
-
-                $.get(source, function (data) {
-                    element.replaceWith(data);
-                })
-            });
-        });
-
-        function getAttributes ( element ) {
-            var attributes = element.attributes;
-            var string = "";
-
-            for (const attr of attributes) {
-                string += attr + " ";
-            }
-
-            console.log(string)
-        }**/
-    </script>
+    <title>Title</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <body>
-    Ceci est un texte
-    <img src="images/get_started16.png">
-    <e-img src="images/get_started16.png" style="width: 100px; opacity: 50%" id="hey"></e-img>
-    <e-img src="images/get_started32.png" class="toto"></e-img>
-    <!--<e_txt src="https://www.w3.org/TR/WAI-WEBCONTENT/wai-pageauth.txt"></e_txt>-->
-    <e-vid src="video_test.mov"></e-vid>
+<form action="test.html" method="get">
+    <input type="file" class="self-storage" name="file_img">
+    <input type="text" class="self-storage" name="file_txt">
+    <button type="submit">Test</button>
+</form>
+<form action="test.html" method="post" class="safe-storage">
+    <input type="text" class="self-storage">
+</form>
+<a href="https://google.com">henlo</a>
 </body>
+<script>
+    /**
+    $( document ).ready(function() {
+        $("form").submit(function (event) {
+            event.preventDefault();
+            let form_data = new FormData($(this)[0]);
+            const form_url = $(this).attr('action');
+            const form_method = $(this).attr('method');
+
+            $(this).children("input.self-storage").each(function () {
+                let form = new FormData();
+                switch ($(this).attr('type')) {
+                    case 'text':
+                        let blob = new Blob([this.value], {type: "text/plain;charset=utf-8"});
+                        form.append("file", blob, "tpm.txt");
+                        break;
+                    case 'file':
+                        form.append("file", this.files[0], "tpm.jpg");
+                        break;
+                    default:
+                        throw 'Input type is not supported'
+                }
+
+                const inputName = $(this).attr('name');
+
+                let settings = {
+                    "url": "http://imta.bastien-antoine.fr/api/",
+                    "method": "POST",
+                    "timeout": 0,
+                    "processData": false,
+                    "mimeType": "multipart/form-data",
+                    "contentType": false,
+                    "data": form
+                };
+
+                $.ajax(settings).done(function (response) {
+                    console.log(response);
+                    form_data.set(inputName, response.url);
+                });
+            })
+
+            $.ajax({
+                "url": form_url,
+                "method": form_method,
+                "data": form_data,
+                "processData": false
+            })
+        });
+    });**/
+</script>
 </html>
+<img src="" alt="">
+    <e-img src="image.jpg" alt="text" class="imageClass">
