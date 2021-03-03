@@ -1,21 +1,3 @@
-/**$('form').each(function () {
-    const basicSubmit = this.submit || this.onsubmit;
-
-    this.addEventListener('submit', function (event) {
-        event.preventDefault(); //this works for links
-        event.stopPropagation(); //this does not work
-
-        processForm(event.composedPath(), basicSubmit);
-    }, {capture: true});
-}, {capture: true})**/
-
-/**document.addEventListener('submit', function (event) {
-    event.preventDefault(); //this works for links
-    event.stopPropagation(); //this does not work
-
-    processForm(event.composedPath());
-}, {capture: true});**/
-
 $("form").find("*[type=submit]").click((event) => {
     event.preventDefault(); //this works for links
 
@@ -32,8 +14,6 @@ function processForm(html_form) {
     let form_data = new FormData(html_form);
 
     $.when(parseForm(html_form, form_data)).done(async function (){
-            //await restoreForm(html_form, form_data);
-            //console.log($(html_form).find("input[type=text]").val());
             let newHtmlForm = $(html_form).clone().appendTo(html_form.parentElement);
             $(html_form).empty();
             restoreForm(newHtmlForm, html_form, form_data)
@@ -82,21 +62,9 @@ function parseForm(form_html, form_data) {
         $.ajax(settings).done(function (response) {
             const responseJson = JSON.parse(response);
             form_data.set(inputName, responseJson.url);
-            //console.log(Date.now().toString());
         });
     });
 }
-
-/**
-function restoreForm(form, formData) {
-    for (let key of formData.keys()) {
-        let selector = `input[name="${ key }"], textarea[name="${ key }"]`;
-        let input = $(form).find(selector);
-        let newVal = formData.get(key);
-        if (typeof (newVal) === "string") input.attr('type', "text")
-        input.val(newVal);
-    }
-}**/
 
 function restoreForm(oldForm, newForm, formData) {
     for (let key of formData.keys()) {
