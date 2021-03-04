@@ -1,28 +1,28 @@
 export class Post {
     id: number;
-    link: string;
+    filename: string;
     comments: Comment[];
 
     constructor(
         id: number,
-        link: string,
+        filename: string,
         comments?: Comment[]
     ) {
         this.id = id;
-        this.link = link;
+        this.filename = filename;
         this.comments = comments ? comments : [];
     }
 }
 
 export class Comment {
     id: number;
-    link: string
+    comment: string
 
     constructor(
         id: number,
-        link: string,
+        comment: string,
     ) {
         this.id = id
-        this.link = link
+        this.comment = comment
     }
 }

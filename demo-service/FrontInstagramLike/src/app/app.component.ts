@@ -85,10 +85,10 @@ export class AppComponent implements OnInit {
     ]);
     this.editForms = new Map();
     this.form_add_comment = this.form_builder.group({
-      link: '',
+      comment: '',
     });
     this.form_add_post = this.form_builder.group({
-      link: ''
+      filename: ''
     })
 
     const eImgElement = createCustomElement(EImgComponent, {injector});
@@ -115,7 +115,7 @@ export class AppComponent implements OnInit {
 
         // Create the edit form, but don't fill it, as it has a file input that
         // doesn't allow to be prefilled
-        let form_post = this.form_builder.group({'link': ''});
+        let form_post = this.form_builder.group({'filename': ''});
         this.editForms.set(post.id, {
           form: form_post,
           comments: new Map()
@@ -124,8 +124,8 @@ export class AppComponent implements OnInit {
           // On first load, the edit form is not shown
           this.isEditFormShown.get("comment").set(comment.id, false);
 
-          // Create the edit form already filled with the link the text of the comment
-          let form_comment = this.form_builder.group({'link': comment.link});
+          // Create the edit form already filled with the comment
+          let form_comment = this.form_builder.group({'comment': comment.comment});
           this.editForms.get(post.id).comments.set(comment.id, form_comment)
         });
       });
@@ -139,9 +139,9 @@ export class AppComponent implements OnInit {
     }
   }
 
-  addComment(id_post: number, data: {"link": string}) {
-    if(data.link !== "") {
-      this.comment.createCommentOnPost(id_post, data.link).subscribe(() => window.location.reload())
+  addComment(id_post: number, data: {"comment": string}) {
+    if(data.comment !== "") {
+      this.comment.createCommentOnPost(id_post, data.comment).subscribe(() => window.location.reload())
     }
   }
 
@@ -193,8 +193,8 @@ export class AppComponent implements OnInit {
     return form;
   }
 
-  editComment(id_comment: number, data: {'link': string}) {
-    this.comment.editComment(id_comment, data.link).subscribe(() => window.location.reload());
+  editComment(id_comment: number, data: {'comment': string}) {
+    this.comment.editComment(id_comment, data.comment).subscribe(() => window.location.reload());
   }
 
   editPost(id_post: number) {
