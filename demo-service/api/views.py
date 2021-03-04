@@ -80,7 +80,13 @@ def posts_id_comments(id_post):
     # We could make it without this line, but this would assume that the post does exists
     post = Post.query.get_or_404(id_post)
 
-    new_comment = Comment(related_post=post.id, timestamp_creation=datetime.now())
+    if not request.json:
+        abort(Response('Empty body', 400))
+
+    if not request.json.get('comment'):
+        abort(Response('Missing comment body', 400))
+
+    new_comment = Comment(comment=request.json.get('comment'), related_post=post.id, timestamp_creation=datetime.now())
     db.session.add(new_comment)
     db.session.commit()
 
@@ -92,7 +98,7 @@ def comments_id(id_comment):
     comment = Comment.query.get_or_404(id_comment)
 
     if request.method == 'PUT':
-        comment.comment = request.json.get('link', comment.comment)
+        comment.comment = request.json.get('comment', comment.comment)
         db.session.commit()
 
         db.session.refresh(comment)
