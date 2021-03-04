@@ -56,8 +56,11 @@ def upload_file():
     if os.path.isfile(os.path.join(app.config['UPLOAD_FOLDER'], filename)):
         extension = ""
         if filename.find(".") != -1:
-            filename, extension = filename.rsplit(".")
-            extension = "." + extension
+            # At least one dot means we have an extension
+            values = filename.rsplit(".")
+            # Make sure we put back the filename like it was before, though without the extension
+            filename = '.'.join(values[:-1])
+            extension = "." + values[-1]
         filename = filename + "_" + str(uuid.uuid4()) + extension
 
     file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
