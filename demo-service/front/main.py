@@ -5,6 +5,7 @@ from views import views
 def create_app():
     app = Flask(__name__)
     app.register_blueprint(views)
+
     return app
 
 if __name__ == "__main__":
