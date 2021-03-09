@@ -65,15 +65,9 @@
                         </div>
                     </form>
 
-                    <form
-                        {#
-                            [hidden]="!isFormDisplayed('post', post.id)"
-                            [formGroup]="getEditForm('post', post.id)"
-                            (ngSubmit)="editPost(post.id)"
-                        #}
-                    >
+                    <form method="post" action="{{ url_for('views.post_edit', id_post=post.id) }}" enctype="multipart/form-data">
                         <div class="input-group">
-                        <input name="filename" type="file" class="form-control" />
+                        <input name="file" type="file" class="form-control" required />
                         <div class="input-group-append">
                             <button class="btn btn-primary button" type="submit">
                                 <i class="fas fa-check"></i>

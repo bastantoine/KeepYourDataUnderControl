@@ -30,3 +30,12 @@ def post_add():
     req = requests.post(os.path.join(API_ENDPOINT, 'posts'), files=files)
     if req.status_code == requests.codes.ok:
         return redirect(url_for('views.home'), code=302)
+
+@views.route('/post/edit/<id_post>', methods=['POST'])
+def post_edit(id_post):
+    new_file = request.files['file']
+    files = {'file': (new_file.filename, new_file)}
+
+    req = requests.put(os.path.join(API_ENDPOINT, 'posts', id_post), files=files)
+    if req.status_code == requests.codes.ok:
+        return redirect(url_for('views.home'), code=302)
