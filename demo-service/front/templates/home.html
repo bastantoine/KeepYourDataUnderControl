@@ -21,15 +21,9 @@
                             <span {#[hidden]="isFormDisplayed('comment', comment.id)"#}>
                                 {{comment.comment}}
                             </span>
-                            <form
-                                {#
-                                    [hidden]="!isFormDisplayed('comment', comment.id)"
-                                    [formGroup]="getEditForm('comment', comment.id)"
-                                    (ngSubmit)="editComment(comment.id, getEditForm('comment', comment.id).value)"
-                                #}
-                            >
+                            <form method="post" action="{{ url_for('views.comment_edit', id_comment=comment.id) }}" >
                             <div class="input-group">
-                                <input name="comment" type="text" class="form-control" placeholder="Comment" />
+                                <input name="comment" type="text" class="form-control" placeholder="Comment" value="{{comment.comment}}" required />
                                 <div class="input-group-append">
                                     <button class="btn btn-primary button" type="submit">
                                         <i class="fas fa-check"></i>

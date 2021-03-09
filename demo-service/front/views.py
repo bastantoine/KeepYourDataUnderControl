@@ -54,3 +54,12 @@ def comment_add(id_post):
     )
     if req.status_code == requests.codes.ok:
         return redirect(url_for('views.home'), code=302)
+
+@views.route('/comment/edit/<id_comment>', methods=['POST'])
+def comment_edit(id_comment):
+    req = requests.put(
+        os.path.join(API_ENDPOINT, 'comments', id_comment),
+        json={'comment': request.form['comment']}
+    )
+    if req.status_code == requests.codes.ok:
+        return redirect(url_for('views.home'), code=302)
