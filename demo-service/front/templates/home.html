@@ -49,14 +49,9 @@
                         </div>
                     {% endfor %}
 
-                    <form
-                        {#
-                            [formGroup]="form_add_comment"
-                            (ngSubmit)="addComment(post.id, form_add_comment.value)"
-                        #}
-                    >
+                    <form method="post" action="{{ url_for('views.comment_add', id_post=post.id) }}" >
                         <div class="input-group">
-                        <input name="comment" type="text" class="form-control" placeholder="Comment" />
+                        <input name="comment" type="text" class="form-control" placeholder="Comment" required />
                         <div class="input-group-append">
                             <button class="btn btn-primary button" type="submit">
                                 <i class="fas fa-plus"></i>

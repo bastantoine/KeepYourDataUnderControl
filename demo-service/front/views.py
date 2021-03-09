@@ -45,3 +45,12 @@ def post_delete(id_post):
     req = requests.delete(os.path.join(API_ENDPOINT, 'posts', id_post))
     if req.status_code == requests.codes.ok:
         return redirect(url_for('views.home'), code=302)
+
+@views.route('/post/<id_post>/comment/add', methods=['POST'])
+def comment_add(id_post):
+    req = requests.post(
+        os.path.join(API_ENDPOINT, 'posts', id_post, 'comments'),
+        json={'comment': request.form['comment']}
+    )
+    if req.status_code == requests.codes.ok:
+        return redirect(url_for('views.home'), code=302)
