@@ -63,3 +63,9 @@ def comment_edit(id_comment):
     )
     if req.status_code == requests.codes.ok:
         return redirect(url_for('views.home'), code=302)
+
+@views.route('/comment/delete/<id_comment>')
+def comment_delete(id_comment):
+    req = requests.delete(os.path.join(API_ENDPOINT, 'comments', id_comment))
+    if req.status_code == requests.codes.ok:
+        return redirect(url_for('views.home'), code=302)

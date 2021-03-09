@@ -32,8 +32,7 @@
                             </div>
                             </form>
                             <span class="float-right">
-                                {#<fa-icon [icon]="faTrashAlt" (click)="deleteComment(comment.id)"></fa-icon>#}
-                                <i class="fas fa-trash-alt"></i>
+                                <a href="{{ url_for('views.comment_delete', id_comment=comment.id) }}"><i class="fas fa-trash-alt"></i></a>
                             </span>
                             <span class="float-right">
                                 {#<fa-icon [icon]="faPencilAlt" (click)="toggleForm('comment', comment.id)"></fa-icon>#}
