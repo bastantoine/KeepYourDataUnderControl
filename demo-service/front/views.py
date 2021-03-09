@@ -39,3 +39,9 @@ def post_edit(id_post):
     req = requests.put(os.path.join(API_ENDPOINT, 'posts', id_post), files=files)
     if req.status_code == requests.codes.ok:
         return redirect(url_for('views.home'), code=302)
+
+@views.route('/post/delete/<id_post>')
+def post_delete(id_post):
+    req = requests.delete(os.path.join(API_ENDPOINT, 'posts', id_post))
+    if req.status_code == requests.codes.ok:
+        return redirect(url_for('views.home'), code=302)
