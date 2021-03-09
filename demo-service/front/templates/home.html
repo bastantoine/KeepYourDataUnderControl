@@ -96,9 +96,9 @@
           <div class="card">
             <div class="card-body">
               <h5 class="card-title">Add a post</h5>
-              <form>
+              <form method="post" action="{{ url_for('views.post_add') }}" enctype="multipart/form-data">
                 <div class="input-group">
-                  <input name="filename" type="file" class="form-control" />
+                  <input name="file" type="file" class="form-control" required />
                   <div class="input-group-append">
                     <button class="btn btn-primary button" type="submit">
                         <i class="fas fa-plus"></i>
