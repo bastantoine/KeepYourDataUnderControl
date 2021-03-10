@@ -14,7 +14,7 @@
         {% for post in posts %}
             <div class="col-lg-4">
                 <div class="card">
-                    <img class="card-img-top" src="{{post.filename}}"></img>
+                    <img class="card-img-top" id="content-post-{{post.id}}" src="{{post.filename}}"></img>
                     <div class="card-body">
                     {% for comment in post.comments %}
                         <div class="mb-3">
@@ -52,7 +52,7 @@
                         </div>
                     </form>
 
-                    <form method="post" action="{{ url_for('views.post_edit', id_post=post.id) }}" enctype="multipart/form-data">
+                    <form method="post" action="{{ url_for('views.post_edit', id_post=post.id) }}" id="form-edit-post-{{post.id}}" enctype="multipart/form-data" style="display: none;" >
                         <div class="input-group">
                         <input name="file" type="file" class="form-control" required />
                         <div class="input-group-append">
@@ -66,8 +66,7 @@
 
                     <div class="card-footer">
                         <a href="{{ url_for('views.post_delete', id_post=post.id) }}"><i class="fas fa-trash-alt"></i></a>
-                        {#<fa-icon [icon]="faPencilAlt" (click)="toggleForm('comment', comment.id)"></fa-icon>#}
-                        <i class="fas fa-pencil-alt"></i>
+                        <i class="fas fa-pencil-alt toggle-edit-post" id="toggle-edit-post-{{post.id}}"></i>
                     </div>
                 </div>
             </div>
@@ -108,6 +107,12 @@
           let [id_comment] = $element.attr('id').split('-').slice(-1);
           $(`form#form-edit-comment-${id_comment}`).toggle();
           $(`span#content-comment-${id_comment}`).toggle();
+        });
+
+        $("i.toggle-edit-post").click((event) => {
+          let $element = $(event.target);
+          let [id_form] = $element.attr('id').split('-').slice(-1);
+          $(`form#form-edit-post-${id_form}`).toggle();
         });
       });
     </script>
