@@ -1,17 +1,29 @@
-FROM node:12.19.0-alpine3.10 as ng_builder
+FROM python:3.8.5-alpine
 
-# Install node modules first, without copying all files
-# This allow to cache the install step
-COPY FrontInstagramLike/package.json /tmp/
-RUN cd /tmp && npm install
+# Set environment variables
+ENV PYTHONUNBUFFERED 1
 
 WORKDIR /usr/src/app
-RUN cp -a /tmp/node_modules .
-COPY FrontInstagramLike/ .
-RUN npm run build-prod
 
-FROM nginx:1.19.0-alpine
+COPY front/requirements.txt .
 
-RUN rm /etc/nginx/conf.d/default.conf
-COPY docker/nginx.conf /etc/nginx/conf.d
-COPY --from=ng_builder /usr/src/app/dist/FrontInstagramLike/ /usr/src/app/
+# Install dependencies.
+RUN pip install --upgrade pip
+RUN pip install -r requirements.txt
+
+RUN addgroup -S webuser && adduser -S webuser -G webuser
+
+# Copy project code.
+COPY front/ .
+
+ENV LOGFOLDER="/usr/src/app/log"
+RUN mkdir -p $LOGFOLDER && touch "$LOGFOLDER/access.log" && touch "$LOGFOLDER/error.log"
+
+# chown all the files to the app user
+RUN chown -R webuser:webuser .
+
+# change to the webuser user
+USER webuser
+
+# Start the server when the image is launched
+CMD  gunicorn 'main:create_app()' --bind 0.0.0.0:8000 --access-logfile "$LOGFOLDER/access.log" --error-logfile "$LOGFOLDER/error.log"
