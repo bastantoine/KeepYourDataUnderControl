@@ -18,10 +18,10 @@
                     <div class="card-body">
                     {% for comment in post.comments %}
                         <div class="mb-3">
-                            <span {#[hidden]="isFormDisplayed('comment', comment.id)"#}>
+                            <span id="content-comment-{{comment.id}}">
                                 {{comment.comment}}
                             </span>
-                            <form method="post" action="{{ url_for('views.comment_edit', id_comment=comment.id) }}" >
+                            <form method="post" action="{{ url_for('views.comment_edit', id_comment=comment.id) }}" id="form-edit-comment-{{comment.id}}" style="display: none;" >
                             <div class="input-group">
                                 <input name="comment" type="text" class="form-control" placeholder="Comment" value="{{comment.comment}}" required />
                                 <div class="input-group-append">
@@ -35,8 +35,7 @@
                                 <a href="{{ url_for('views.comment_delete', id_comment=comment.id) }}"><i class="fas fa-trash-alt"></i></a>
                             </span>
                             <span class="float-right">
-                                {#<fa-icon [icon]="faPencilAlt" (click)="toggleForm('comment', comment.id)"></fa-icon>#}
-                                <i class="fas fa-pencil-alt"></i>
+                                <i class="fas fa-pencil-alt toggle-edit-comment" id="toggle-edit-comment-{{comment.id}}"></i>
                             </span>
                             <br />
                         </div>
@@ -102,5 +101,15 @@
       integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
       crossorigin="anonymous"
     ></script>
+    <script type="text/javascript">
+      $(() => {
+        $("i.toggle-edit-comment").click((event) => {
+          let $element = $(event.target);
+          let [id_comment] = $element.attr('id').split('-').slice(-1);
+          $(`form#form-edit-comment-${id_comment}`).toggle();
+          $(`span#content-comment-${id_comment}`).toggle();
+        });
+      });
+    </script>
   </body>
 </html>
