@@ -1,4 +1,5 @@
 $( document ).ready(function() {
+
     $("e-img").each(function() {
         const source = $(this).attr("src");
 
@@ -22,6 +23,22 @@ $( document ).ready(function() {
             .fail(function () {
                 element.replaceWith(alternativeText);
             });
+    });
+
+    $("img").filter(':not([analyzed])').each(function() {
+        const source = $(this).attr("src");
+
+        let qrCode = new QrCode(undefined, source);
+
+        try {
+            qrCode.decode();
+            const newSource = qrCode.getLink();
+            $(this).attr("src", newSource);
+            $(this).attr("analyzed", '');
+        }
+        catch (exception) {
+            if (exception.message !== "Not a qrCode") throw exception;
+        }
     });
 });
 
