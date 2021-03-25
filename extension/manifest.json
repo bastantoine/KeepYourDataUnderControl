@@ -12,20 +12,22 @@
   "content_scripts": [
     {
       "matches": [
-        "http://*/*"
+        "http://*/*",
+        "https://*/*"
       ],
       "run_at": "document_idle",
-      "js": ["jquery-3.5.1.min.js", "content_script-1.js"]
+      "js": ["jquery-3.5.1.min.js", "QrCode.js", "content_script-1.js"]
     }
   ],
 
   "web_accessible_resources": [
-    "jquery-3.5.1.min.js"
+    "jquery-3.5.1.min.js",
+    "QrCode.js"
   ],
 
   "background": {
     "scripts": ["background.js"],
-    "persistent": false
+    "persistent": true
   },
 
   "browser_action": {
