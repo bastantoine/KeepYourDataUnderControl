@@ -55,7 +55,7 @@ async function parseForm(form_html, form_data) {
         // We specify the parameters for the ajax request to the self storage
         let settings = {
             // This url need to be changed to your own self storage
-            "url": "http://imta.bastien-antoine.fr/api/",
+            "url": "",
             "method": "POST",
             "timeout": 0,
             "processData": false,
