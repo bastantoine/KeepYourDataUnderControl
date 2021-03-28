@@ -19,7 +19,7 @@ Afin d'utiliser l'extension au sein d'un navigateur google chrome il faut :
   ```javascript
   let settings = {
     // This url need to be changed to your own self storage
-    "url": "http://imta.bastien-antoine.fr/api/",
+    "url": "...",
     "method": "POST",
     "timeout": 0,
     "processData": false,
