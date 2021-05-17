@@ -1,20 +1,73 @@
-# Projet Keep Control of Your Data
+# Keep Control of Your Data
 
-- [1. Idée proposée](#1-idée-proposée)
-  - [1.1. Principes de fonctionnement](#11-principes-de-fonctionnement)
-- [2. Ce qui a été fait](#2-ce-qui-a-été-fait)
-- [3. Ce qu'il reste à faire](#3-ce-quil-reste-à-faire)
-  - [3.1. Extension](#31-extension)
-    - [3.1.1. Critiques](#311-critiques)
-    - [3.1.2. Importantes](#312-importantes)
-    - [3.1.3. Secondaires](#313-secondaires)
-  - [3.2. Services web de démo](#32-services-web-de-démo)
+This repository contains a draft proposal of a system to give the control of the personal data back to their real owners. The work has been done by two engineering students of [IMT Atlantique](https://www.imt-atlantique.fr/en).
 
-## 1. Idée proposée
+This repo is no longer maintained, and has been moved to [an other repository](https://gitlab.inria.fr/alebre/teaching-keepyourdata).
 
-Au sein de ce projet nous avons souhaité mettre en place une solution permettant aux utilisateurs de reprendre réllement le contrôle de leur données. Cette solution s'articule en deux points clés :
+- [1. Proposal](#1-proposal)
+  - [1.1. Working principles](#11-working-principles)
+    - [1.1.1. *Catch-Store-Send* Principle](#111-catch-store-send-principle)
+    - [1.1.2. *Get-Show* Principle](#112-get-show-principle)
+- [2. Idée proposée](#2-idée-proposée)
+  - [2.1. Principes de fonctionnement](#21-principes-de-fonctionnement)
+- [3. Ce qui a été fait](#3-ce-qui-a-été-fait)
+- [4. Ce qu'il reste à faire](#4-ce-quil-reste-à-faire)
+  - [4.1. Extension](#41-extension)
+    - [4.1.1. Critiques](#411-critiques)
+    - [4.1.2. Importantes](#412-importantes)
+    - [4.1.3. Secondaires](#413-secondaires)
+  - [4.2. Services web de démo](#42-services-web-de-démo)
 
-1. La séparation des acteurs hébergeant les données personnelles de ceux les utilisant. Ainsi les services demandant et utilisant des données ne les auraient tout simplement plus, et auraient à la place des fausses données contentant les liens pointant vers les vraies données.
+## 1. Proposal
+
+In this project, we wanted to develop a solution that would allow internet users to really take back the control of their personal data. This solution is organized in two main parts:
+
+1. The separation of the actors hosting the personal data from those using it. This way the services requesting the data to the user and using them would simply no longer have them, and would instead have fake data with a link pointing to the real data.
+2. The implementation of an intermediate actor that would be there as a relay between the service hosting the data and the one using them. This intermediate actor would also be responsible of making sure the real data stays visible to the users that would only see them.
+
+### 1.1. Working principles
+
+Because the data would not longer be stored by the service using them, we had to design new ways to be able to send them, as well as see them, and the most seamless way possible for the end user. To that extent we have designed two principles that are to be implemented in the intermediate actor:
+
+1. The [*Catch-Store-Send* principle](#111-catch-store-send-principle)
+2. The [*Get-Show* principle](#112-get-show-principle)
+
+Because this solution should be able to work on every services, whether or not their are designed to work with our solution, we had to find a way to include the link pointing to the user's data in the data that are sent to the service. We also had to find a way to respect the type of ressources requested, even for the fake data. So if the service asked for a picture, we have to send him a picture.
+
+For the text-based data, there was no real problem because the links are also text. It would probably be necessary though to include it in some kind of template, to avoid possible issues in the sending as well as simplify the fetch in the source of the page.
+
+For image-based ressources we decided to include the link inside a QR Code that is sent to the service. This way in the *Get-Show* principle, when getting the real data from the link, the intermediate actor simply has to decode the QR Code to get the link to the real image.
+
+#### 1.1.1. *Catch-Store-Send* Principle
+
+This principle is responsible for the storage of the personal data in a secure place as well as the sending of fake placeholder data to the final service. It works the following way:
+
+1. When a user submits a form with data inside it, the intermediate actor intercepts and blocks the sending,
+2. It then loops over each personal data the user has filled, and for each:
+   1. Sends it to the user's remote storage
+   2. Receives a link pointing to the original data from the remote storage
+   3. Replaces the original data with the link
+3. Send the form updated with the links to the service
+
+#### 1.1.2. *Get-Show* Principle
+
+This principle is responsible for display of the personal data to the final user, in place of the placeholder links to the data. It works the following way:
+
+1. When the user visits a web page, the intermediate actor will scan the page to detect all links pointing to a distant user data
+2. For each link found, it will:
+   1. Get the data behind the link
+   2. Transform the data to get the final version if needed (especially if the link points to an image)
+3. Show the final data to the end user
+
+***
+
+(NOTE: The rest of this README is the same as what was said above, but in French, as well as a list of tasks (in French as well) that are, in our opinion, needed to be completed in order to have a working proof of concept.)
+
+## 2. Idée proposée
+
+Au sein de ce projet nous avons souhaité mettre en place une solution permettant aux utilisateurs de reprendre réellement le contrôle de leur données. Cette solution s'articule en deux points clés :
+
+1. La séparation des acteurs hébergeant les données personnelles de ceux les utilisant. Ainsi les services demandant et utilisant des données ne les auraient tout simplement plus, et auraient à la place des fausses données contenant les liens pointant vers les vraies données.
 2. La mise en place d’un acteur intermédiaire permettant de faire le lien entre le service hébergeur de données et celui qui les utilise. C'est cet acteur qui permettrait que les données personnelles soient toujours visibles pour les utilisateurs des service qui ne feraient que les consulter.
 
 La solution que nous avons développé devait respecter deux contraintes assez fortes :
@@ -22,9 +75,9 @@ La solution que nous avons développé devait respecter deux contraintes assez f
 1. Elle devait pouvoir fonctionner sur n'importe quel service utilisant des données personnelles, quelque soit leur forme ou leur volume, et peut importe que ce service soit conçu pour ou non.
 2. Son utilisation devait être la plus transparente possible pour l’utilisateur final.
 
-### 1.1. Principes de fonctionnement
+### 2.1. Principes de fonctionnement
 
-Les données n'étant plus stockées sur le service les utilisant, il a fallu concevoir de nouvelles manières pour permettre de stocker et afficher les données personnelles, et ce de manière la plus transparante possible. Pour ce faire nous avons conçu deux principes :
+Les données n'étant plus stockées sur le service les utilisant, il a fallu concevoir de nouvelles manières pour permettre de stocker et afficher les données personnelles, et ce de manière la plus transparente possible. Pour ce faire nous avons conçu deux principes :
 
 1. Le principe *Interception-Stockage-Envoi* (*ISE*) (voir *fig. 1*)
 2. Le principe *Récupération-Affichage* (*RA*) (voir *fig. 2*)
@@ -41,7 +94,7 @@ Pour des images, nous avons décidé d'inclure les liens dans des QR codes que n
 
 ***
 
-## 2. Ce qui a été fait
+## 3. Ce qui a été fait
 
 La réalisation de ce projet repose sur deux parties :
 
@@ -54,11 +107,11 @@ Ces deux applications web permettent de pouvoir tester l'implémentation des pri
 
 ***
 
-## 3. Ce qu'il reste à faire
+## 4. Ce qu'il reste à faire
 
 Cette section détaille les tâches que nous avons listé comme restant à faire pour obtenir au moins un prototype fonctionnel, au mieux un produit utilisable dans un environnement plus large que la simple expérimentation.
 
-### 3.1. Extension
+### 4.1. Extension
 
 Les tâches listées pour l'extension sont réparties en trois catégories selon leur niveau d'importance, de critique à secondaire. Au sein d'une catégorie, aucun ordre particulier n'a été utilisé.
 
@@ -77,7 +130,7 @@ Les tâches listées pour l'extension sont réparties en trois catégories selon
   - [ ] [Ajout d'une interface pour facilement changer l'URL de l'espace de stockage](#taches-extension-secondaires-interface)
   - [ ] [Ajout du support des API des services de stockage](#taches-extension-secondaires-apis-stockage-externe)
 
-#### 3.1.1. Critiques
+#### 4.1.1. Critiques
 
 **Ajout du support des ressources textes dans les implémentations des principes**
 <a name="taches-extension-critique-support-ressources-texte"></a>
@@ -159,7 +212,7 @@ Ainsi on pense que revenir à l'idée initiale de générer et lire les QR code 
 
 *Durée estimée : 4h*
 
-#### 3.1.2. Importantes
+#### 4.1.2. Importantes
 
 **Meilleure gestion du CSP dans l'implémentation du principe *RA***
 <a name="taches-extension-importantes-gestion-CSP"></a>
@@ -225,7 +278,7 @@ Ainsi il serait intéressant de pouvoir faire en sorte que ce script soit inject
 
 *Durée estimée : ?*
 
-#### 3.1.3. Secondaires
+#### 4.1.3. Secondaires
 
 **Meilleure gestion de la sécurisation face aux injections de code malveillant**
 <a name="taches-extension-secondaires-securisation-injections"></a>
@@ -258,7 +311,7 @@ Cependant pour le moment l'extension est conçue pour fonctionner uniquement ave
 
 *Durée estimée : 4h-6h selon le nombre d'implémentation d'interfaces*
 
-### 3.2. Services web de démo
+### 4.2. Services web de démo
 
 **Création d'un nouveau service de démo pour tester l'implémentation des principes sur un services conçu pour**
 
